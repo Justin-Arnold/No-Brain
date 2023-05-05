@@ -1,0 +1,48 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+
+model Task {
+    id               String         @id @default(uuid()) @db.Uuid
+    created_at       DateTime       @default(now())
+    updated_at       DateTime       @updatedAt
+    due_at           DateTime?
+    name             String         @default("New Task")
+    description      String?
+    order            Int            @default(0)
+    completed        Boolean        @default(false)
+    project          Project?       @relation(fields: [project_id], references: [id])
+    project_id       String?        @db.Uuid
+    parent           Task?          @relation("TaskToSubtasks", fields: [parentId], references: [id], onDelete: Cascade)
+    parentId         String?        @map("parent_id") @db.Uuid
+    subtasks         Task[]         @relation("TaskToSubtasks")
+    subtask_id       String?        @db.Uuid
+}
+
+model Project {
+    id               String         @id @default(uuid()) @db.Uuid
+    created_at       DateTime       @default(now())
+    updated_at       DateTime       @updatedAt
+    due_at           DateTime?
+    name             String         @default("New Project")
+    description      String?
+    order            Int?
+    tasks            Task[]
+    user             User?          @relation(fields: [user_id], references: [id])
+    user_id          String?        @db.Uuid
+    status           String?
+}
+model User {
+    id               String         @id @default(uuid()) @db.Uuid
+    created_at       DateTime       @default(now())
+    projects         Project[]
+}

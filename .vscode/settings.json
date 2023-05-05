@@ -1,0 +1,7 @@
+{
+    "cSpell.words": ["planote"],
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    }
+}
