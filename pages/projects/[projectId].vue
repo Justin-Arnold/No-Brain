@@ -14,6 +14,14 @@ const addTask = async () => {
     refresh()
 }
 
+const updateTask = async (id: string, name: string, completed: boolean) => {
+    const { data } = await useFetch(`/api/tasks/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify({ name: name, completed: !completed }),
+    })
+    refresh()
+}
+
 </script>
 
 <template>
@@ -21,8 +29,8 @@ const addTask = async () => {
         <input type="text" v-model="newTask" placeholder="Add a new task">
         <button @click="addTask">Add</button>
         <br/>
-        <span v-for="task in project.tasks" class="bg-white/10 p-2 rounded">
-            {{ task.name }}
+        <span v-for="task in project.tasks" class="bg-white/10 p-2 rounded flex justify-between gap-4" :class="{'line-through opacity-50': task.completed}">
+            <span>{{ task.name }}</span><input type="checkbox" :checked="task.completed" @change="updateTask(task.id, task.name, task.completed)"/>
         </span>
     </div>
 </template>
