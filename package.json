@@ -10,6 +10,7 @@
   },
   "devDependencies": {
     "@types/node": "^18",
-    "nuxt": "^3.4.3"
+    "nuxt": "^3.4.3",
+    "prisma": "^4.13.0"
   }
 }
