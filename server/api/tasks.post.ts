@@ -12,9 +12,18 @@ export default defineEventHandler(async (event) => {
         return new Response("No name", { status: 400 })
     }
 
+    if (!body.projectId) {
+        return new Response("No projectId", { status: 400 })
+    }
+
     const task = await prisma.tasks.create({
         data: {
-            name: body.name
+            name: body.name,
+            project: {
+                connect: {
+                    id: parseInt(body.projectId)
+                }
+            },
         },
     });
 
