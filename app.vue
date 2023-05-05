@@ -1,6 +1,7 @@
 <script setup lang="ts">
 
 const {data: tasks, refresh } = await useFetch('/api/tasks')
+const {data: projects } = await useLazyFetch('/api/projects')
 
 const newTask = ref('')
 
@@ -22,6 +23,13 @@ const addTask = async () => {
             <br/>
             <div v-for="each in tasks" :key="each.id">
                 {{ each.name }}
+            </div>
+            <br/>
+            Projects:
+            <div v-for="each in projects" :key="each.id">
+                {{ each.name }}
+                <br/>
+                <span v-for="task in each.tasks">{{ task.name }}</span>
             </div>
         </div>
     </div>
