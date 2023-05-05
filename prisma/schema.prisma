@@ -14,4 +14,13 @@ model Tasks {
     id               Int        @id @default(autoincrement())
     created_at       DateTime   @default(now())
     name             String?
+    project          Projects?  @relation(fields: [project_id], references: [id])
+    project_id       Int?
+}
+
+model Projects {
+    id               Int        @id @default(autoincrement())
+    created_at       DateTime   @default(now())
+    name             String?
+    tasks            Tasks[]
 }
