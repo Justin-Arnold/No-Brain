@@ -14,7 +14,8 @@ model Tasks {
     id               Int        @id @default(autoincrement())
     created_at       DateTime   @default(now())
     name             String?
-    project          Projects?  @relation(fields: [project_id], references: [id])
+    completed        Boolean    @default(false)
+    project          Projects?   @relation(fields: [project_id], references: [id])
     project_id       Int?
 }
 
