@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 const {data: tasks, refresh } = await useFetch('/api/tasks')
-const {data: projects } = await useLazyFetch('/api/projects')
+const {data: projects } = await useFetch('/api/projects')
 
 const newTask = ref('')
 

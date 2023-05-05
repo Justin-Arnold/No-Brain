@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 const route = useRoute()
-const { data: project, refresh } = useLazyFetch(`/api/projects/${route.params.projectId}`)
+const { data: project, refresh } = await useFetch(`/api/projects/${route.params.projectId}`)
 
 
 const newTask = ref('')
