@@ -3,12 +3,15 @@
 
 generator client {
     provider = "prisma-client-js"
+    previewFeatures = ["multiSchema"]
 }
 
 datasource db {
     provider = "postgresql"
     url      = env("DATABASE_URL")
+    schemas  = ["public", "private"]
 }
+
 
 model Tasks {
     id               Int        @id @default(autoincrement())
@@ -17,6 +20,7 @@ model Tasks {
     completed        Boolean    @default(false)
     project          Projects?   @relation(fields: [project_id], references: [id])
     project_id       Int?
+    @@schema("private")
 }
 
 model Projects {
@@ -24,4 +28,5 @@ model Projects {
     created_at       DateTime   @default(now())
     name             String?
     tasks            Tasks[]
+    @@schema("public")
 }
