@@ -2,5 +2,6 @@
 export default defineNuxtConfig({
     modules: [
         'nuxt-windicss',
+        '@nuxtjs/supabase'
     ],
 })

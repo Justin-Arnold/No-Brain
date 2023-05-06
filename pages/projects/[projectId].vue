@@ -2,6 +2,8 @@
 
 const route = useRoute()
 const { data: project, refresh } = await useFetch(`/api/projects/${route.params.projectId}`)
+const { data: parto } = await useFetch('/api/tasks')
+console.log(parto)
 
 
 const newTask = ref('')
