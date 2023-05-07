@@ -22,10 +22,10 @@ const newProject = async () => {
                 Planet
             </h1>
         </div>
-        <nav class="grow">
+        <nav class="grow w-full">
             <div v-if="pending" height="2rem" class="mb-2"></div>
             <ul v-else class="flex flex-col gap-4">
-                <li v-for="each in projects" :key="each.id" class="bg-white/5 rounded text-center p-2">
+                <li v-for="each in projects" :key="each.id" class="bg-white/5 rounded text-center p-2 w-full">
                     <NuxtLink :to="`/projects/${each.id}`">{{ each.name }}</NuxtLink>
                 </li>
                 <button @click="newProject" class=" text-center text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-400 to-fuchsia-600">Add +</button>
