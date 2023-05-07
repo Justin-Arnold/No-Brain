@@ -15,6 +15,18 @@ const login = async () => {
     }
 }
 
+const signup = async () => {
+    const {data, error} = await client.auth.signUp({
+        email: username.value,
+        password: password.value
+    })
+    if (error) {
+        console.log(error)
+    } else {
+        navigateTo('/login')
+    }
+}
+
 
 </script>
 
@@ -32,7 +44,10 @@ const login = async () => {
                 <input type="text" v-model="username" placeholder="Username" class="mb-4 p-1 rounded text-black"/>
                 <label class="text-xs">Password</label>
                 <input type="password" v-model="password" placeholder="Password" class="mb-8 p-1 rounded text-black"/>
-                <button @click="login" class="bg-gradient-to-r from-purple-800 to-fuchsia-700 rounded p-1">Login</button>
+                <div class="flex gap-2">
+                    <button @click="signup" class="border-2 border-purple-500 rounded p-1 w-full">Sign up</button>
+                    <button @click="login" class="bg-gradient-to-r from-purple-800 to-fuchsia-700 rounded p-1 w-full">Login</button>
+                </div>
             </div>
         </div>
     </div>
