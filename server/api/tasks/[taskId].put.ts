@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
     const body = await readBody(event)
     if (!taskId) {return new Response("No taskId", { status: 400 })}
 
-    const task = await prisma.tasks.update({
+    const task = await prisma.task.update({
         where: {
             id: parseInt(taskId)
         },

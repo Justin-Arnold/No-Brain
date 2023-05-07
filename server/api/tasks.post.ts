@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
         return new Response("No projectId", { status: 400 })
     }
 
-    const task = await prisma.tasks.create({
+    const task = await prisma.task.create({
         data: {
             name: body.name,
             project: {

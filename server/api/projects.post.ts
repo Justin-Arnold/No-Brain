@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
         return new Response("No name", { status: 400 })
     }
 
-    const task = await prisma.projects.create({
+    const task = await prisma.project.create({
         data: {
             name: 'New Project'
         },
