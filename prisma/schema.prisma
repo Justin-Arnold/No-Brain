@@ -13,20 +13,61 @@ datasource db {
 }
 
 
-model Tasks {
+model Task {
     id               Int        @id @default(autoincrement())
     created_at       DateTime   @default(now())
+    updated_at       DateTime   @updatedAt
+    due_at           DateTime?
     name             String?
+    description      String?
+    priority         Int?
     completed        Boolean    @default(false)
-    project          Projects?   @relation(fields: [project_id], references: [id])
+    project          Project?   @relation(fields: [project_id], references: [id])
     project_id       Int?
+    parentId  Int?     @map("parent_id")
+    parent    Task?    @relation("TaskToSubtasks", fields: [parentId], references: [id], onDelete: Cascade)
+    subtasks  Task[]   @relation("TaskToSubtasks")
+    subtask_id       Int?
+    notes            Note[]
+
     @@schema("private")
 }
 
-model Projects {
+model Project {
     id               Int        @id @default(autoincrement())
     created_at       DateTime   @default(now())
+    updated_at       DateTime   @updatedAt
+    due_at           DateTime?
     name             String?
-    tasks            Tasks[]
-    @@schema("public")
+    description      String?
+    priority         Int?
+    tasks            Task[]
+    user             User?      @relation(fields: [user_id], references: [id])
+    user_id          Int?
+    status           String?
+    notes            Note[]
+
+    @@schema("private")
+}
+
+model Note {
+    id               Int        @id @default(autoincrement())
+    created_at       DateTime   @default(now())
+    updated_at       DateTime   @updatedAt
+    name             String?
+    content          String?
+    task             Task?      @relation(fields: [task_id], references: [id])
+    task_id          Int?
+    project          Project?   @relation(fields: [project_id], references: [id])
+    project_id       Int?
+
+    @@schema("private")
+}
+
+model User {
+    id     Int     @id
+    projects Project[]
+  // ...
+
+  @@schema("private")
 }
