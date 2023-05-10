@@ -1,21 +1,26 @@
 <script setup lang="ts">
 
-const {data: projects, pending, refresh  } = useLazyFetch('/api/projects')
-
 const client = useSupabaseAuthClient()
+const user = useSupabaseUser()
+const userID = computed(() => user.value?.id)
+const {data: projects, pending, refresh  } = useLazyFetch(`/api/projects?id=${userID.value}`)
+
+
+
 
 const newProject = async () => {
-    const { data } = await useLazyFetch('/api/projects', {
-        method: 'POST',
-        body: JSON.stringify({ name: 'New Project' })
-    })
+    // console.log(projects)
+    // const { data } = await useLazyFetch('/api/projects', {
+    //     method: 'POST',
+    //     body: JSON.stringify({ name: 'New Project' })
+    // })
     refresh()
 }
 
 </script>
 
 <template>
-    <div class="w-60 bg-black/50 p-4 text-white flex flex-col gap-4 items-center">
+    <div class="w-60 bg-black/50 p-4 text-white flex flex-col gap-4 items-center flex-shrink-0">
         <div class="flex gap-4 items-center cursor-pointer user-select-none" @click="navigateTo('/')">
             <img src="~/assets/images/logo.png"  class="h-12"/>
             <h1 class="text-4xl font-bold">

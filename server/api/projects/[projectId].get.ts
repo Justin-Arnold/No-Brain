@@ -10,7 +10,8 @@ export default defineEventHandler(async (event) => {
             id: parseInt(projectId)
         },
         include: {
-            tasks: true
+            tasks: true,
+            notes: true
         }
     });
 })

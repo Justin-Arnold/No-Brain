@@ -11,6 +11,7 @@ const login = async () => {
     if (error) {
         console.log(error)
     } else {
+        console.log(data)
         navigateTo('/')
     }
 }
@@ -23,6 +24,7 @@ const signup = async () => {
     if (error) {
         console.log(error)
     } else {
+        console.log(data)
         navigateTo('/login')
     }
 }
