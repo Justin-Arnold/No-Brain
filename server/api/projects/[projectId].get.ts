@@ -3,9 +3,15 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export default defineEventHandler(async (event) => {
-    const projectId = event.context.params?.projectId;
-    if (!projectId) {return new Response("No projectId", { status: 400 })}
-    return prisma.project.findUnique({
+    const query = getQuery(event)
+    const projectId = query.projectId as string
+    if (!projectId) {
+        throw createError({
+            statusCode: 401,
+            statusMessage: "Project ID Missing"
+        })
+    }
+    const project = await prisma.project.findUnique({
         where: {
             id: parseInt(projectId)
         },
@@ -13,5 +19,11 @@ export default defineEventHandler(async (event) => {
             tasks: true,
             notes: true
         }
-    });
+    })
+    if (project === null) {
+        throw createError({
+            statusCode: 404, statusMessage: "Project not found"
+        })
+    }
+    return project
 })
