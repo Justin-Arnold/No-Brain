@@ -18,7 +18,7 @@ model Task {
     created_at       DateTime   @default(now())
     updated_at       DateTime   @updatedAt
     due_at           DateTime?
-    name             String?
+    name             String     @default("New Task")
     description      String?
     priority         Int?
     completed        Boolean    @default(false)
@@ -38,7 +38,7 @@ model Project {
     created_at       DateTime   @default(now())
     updated_at       DateTime   @updatedAt
     due_at           DateTime?
-    name             String?
+    name             String     @default("New Project")
     description      String?
     priority         Int?
     tasks            Task[]
@@ -54,7 +54,7 @@ model Note {
     id               Int        @id @default(autoincrement())
     created_at       DateTime   @default(now())
     updated_at       DateTime   @updatedAt
-    name             String?
+    name             String     @default("New Note")
     content          String?
     task             Task?      @relation(fields: [task_id], references: [id])
     task_id          Int?
