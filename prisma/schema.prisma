@@ -42,8 +42,8 @@ model Project {
     description      String?
     priority         Int?
     tasks            Task[]
-    user             User?      @relation(fields: [user_id], references: [id])
-    user_id          Int?
+    user             User?      @relation(fields: [user_id], references: [linked_id])
+    user_id          String?
     status           String?
     notes            Note[]
 
@@ -65,9 +65,10 @@ model Note {
 }
 
 model User {
-    id     Int     @id
-    projects Project[]
-  // ...
+    id               Int         @id @default(autoincrement())
+    linked_id        String      @unique
+    projects         Project[]
+   // ...
 
   @@schema("private")
 }
