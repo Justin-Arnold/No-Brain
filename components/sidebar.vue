@@ -3,17 +3,18 @@
 const client = useSupabaseAuthClient()
 const user = useSupabaseUser()
 const userID = computed(() => user.value?.id)
-const {data: projects, pending, refresh  } = useLazyFetch(`/api/projects?id=${userID.value}`)
+const {data: projects, pending, refresh, error  } = await useFetch(`/api/projects`, {
+    query: { id: userID },
+})
 
 
 
 
 const newProject = async () => {
-    // console.log(projects)
-    // const { data } = await useLazyFetch('/api/projects', {
-    //     method: 'POST',
-    //     body: JSON.stringify({ name: 'New Project' })
-    // })
+    const { data } = await useFetch('/api/projects', {
+        method: 'POST',
+        body: JSON.stringify({ name: 'New Project', userId: userID.value }),
+    })
     refresh()
 }
 

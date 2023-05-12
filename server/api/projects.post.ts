@@ -6,15 +6,28 @@ export default defineEventHandler(async (event) => {
     const body = await readBody(event)
     console.log(body)
     if (!body) {
-        return new Response("No body", { status: 400 })
+        throw createError({
+            statusCode: 400,
+            statusMessage: "Missing body"
+        })
     }
     if (!body.name) {
-        return new Response("No name", { status: 400 })
+        throw createError({
+            statusCode: 400,
+            statusMessage: "Missing name"
+        })
+    }
+    if (!body.userId) {
+        throw createError({
+            statusCode: 400,
+            statusMessage: "Missing user ID"
+        })
     }
 
     const task = await prisma.project.create({
         data: {
-            name: 'New Project'
+            name: 'New Project',
+            user_id: body.userId
         },
     });
 
