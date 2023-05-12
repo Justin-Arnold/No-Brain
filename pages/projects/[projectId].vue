@@ -2,7 +2,10 @@
 
 const route = useRoute()
 const projectId = route.params.projectId
-const { data: project, refresh } = await useFetch(`/api/projects/${projectId}`)
+const userID = route.query.id
+const { data: project, refresh } = await useFetch(`/api/projects/${projectId}`, {
+    query: { id: userID },
+})
 
 const newTask = ref('')
 
