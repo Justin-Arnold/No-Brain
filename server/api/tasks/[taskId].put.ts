@@ -13,7 +13,8 @@ export default defineEventHandler(async (event) => {
         },
         data: {
             name: body.name,
-            completed: body.completed
+            completed: body.completed,
+            order: parseInt(body.order),
         },
     });
 
