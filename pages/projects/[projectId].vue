@@ -13,7 +13,7 @@ const addTask = async () => {
     if (!project.value) return
     const { data } = await useFetch('/api/tasks', {
         method: 'POST',
-        body: JSON.stringify({ name: newTask.value, projectId: route.params.projectId }),
+        body: JSON.stringify({ name: newTask.value, projectId: route.params.projectId, order: project.value.tasks.length }),
     })
     refresh()
 }

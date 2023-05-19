@@ -4,7 +4,6 @@ const prisma = new PrismaClient();
 
 export default defineEventHandler(async (event) => {
     const body = await readBody(event)
-    console.log(body)
     if (!body) {
         return new Response("No body", { status: 400 })
     }
@@ -16,9 +15,14 @@ export default defineEventHandler(async (event) => {
         return new Response("No projectId", { status: 400 })
     }
 
+    if (!body.order) {
+        return new Response("No order set on task", { status: 400 })
+    }
+
     const task = await prisma.task.create({
         data: {
             name: body.name,
+            order: parseInt(body.order),
             project: {
                 connect: {
                     id: parseInt(body.projectId)
