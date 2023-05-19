@@ -20,7 +20,7 @@ model Task {
     due_at           DateTime?
     name             String     @default("New Task")
     description      String?
-    priority         Int?
+    order            Int        @default(0)
     completed        Boolean    @default(false)
     project          Project?   @relation(fields: [project_id], references: [id])
     project_id       Int?
@@ -40,7 +40,7 @@ model Project {
     due_at           DateTime?
     name             String     @default("New Project")
     description      String?
-    priority         Int?
+    order            Int?
     tasks            Task[]
     user             User?      @relation(fields: [user_id], references: [linked_id])
     user_id          String?

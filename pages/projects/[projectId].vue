@@ -19,12 +19,17 @@ const addTask = async () => {
 }
 
 const updateTask = async (id: number, name: string, completed: boolean) => {
-    const { data } = await useFetch(`/api/tasks/${id}`, {
+    await useFetch(`/api/tasks/${id}`, {
         method: 'PUT',
         body: JSON.stringify({ name: name, completed: !completed }),
     })
     refresh()
 }
+
+const sortedTasks = computed(() => {
+    if (!project.value) return []
+    return project.value.tasks.sort((a, b) => a.order - b.order)
+})
 
 </script>
 
@@ -40,7 +45,7 @@ const updateTask = async (id: number, name: string, completed: boolean) => {
                 Add
             </button>
             <div class="overflow-y-auto flex flex-col gap-2">
-                <span v-for="task in project?.tasks" class="bg-white/10 p-2 rounded flex justify-between gap-4" :class="{'line-through opacity-50': task.completed}">
+                <span v-for="task in sortedTasks" class="bg-white/10 p-2 rounded flex justify-between gap-4" :class="{'line-through opacity-50': task.completed}">
                     <span>
                         {{ task.name }}
                     </span>
