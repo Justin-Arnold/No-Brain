@@ -74,29 +74,17 @@ function expandSelf(elementId: string) {
             <button @click="addTask">
                 Add
             </button>
-            <!-- <div class="overflow-y-auto flex flex-col gap-2">
-                <span v-for="task in sortedTasks" class="bg-white/10 p-2 rounded flex justify-between gap-4" :class="{'line-through opacity-50': task.completed}">
-                    <span>
-                        {{ task.name }}
-                    </span>
-                    <input
-                        type="checkbox"
-                        :checked="task.completed"
-                        @change="updateTask(task.id, task.name, task.completed)"
-                    />
-                </span>
-            </div> -->
             <draggable
             v-model="sortedTasks"
             @start="drag=true"
             @end="drag=false"
             item-key="id"
             tag="span"
-            class="flex flex-col gap-2"
+            class="flex flex-col gap-2 flex-grow overflow-y-auto"
             :move="move"
             >
                 <template #item="{element}">
-                    <span @click="expandSelf(element.id)" :id="element.id" class="w-80 bg-gray-500 p-2 rounded flex justify-between gap-4 select-none cursor-pointer items-center whitespace-nowrap overflow-hidden" :class="{'line-through !bg-gray-700': element.completed}">
+                    <span @click="expandSelf(element.id)" :id="element.id" class="flex-shrink-0 w-full bg-gray-500 p-2 rounded flex justify-between gap-4 select-none cursor-pointer items-center whitespace-nowrap overflow-hidden" :class="{'line-through !bg-gray-700': element.completed}">
                         <input
                             type="checkbox"
                             :checked="element.completed"
