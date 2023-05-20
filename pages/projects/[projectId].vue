@@ -48,6 +48,19 @@ const move = (moveEvent: any) => {
     console.log(moveEvent)
 }
 
+function expandSelf(elementId: string) {
+    //toggle whitespace nowrap on clicked element
+    const element = document.getElementById(elementId)
+    if (element) {
+        element.classList.toggle('whitespace-nowrap')
+    }
+    //on a child span of that element toggle truncate
+    const child = element?.children[1]
+    if (child) {
+        child.classList.toggle('truncate')
+    }
+}
+
 </script>
 
 <template>
@@ -83,16 +96,18 @@ const move = (moveEvent: any) => {
             :move="move"
             >
                 <template #item="{element}">
-                    <span class="bg-gray-500 p-2 rounded flex justify-between gap-4 select-none cursor-pointer" :class="{'line-through !bg-gray-700': element.completed}">
-                        <span>
-                            {{ element.name }}
-                        </span>
+                    <span @click="expandSelf(element.id)" :id="element.id" class="w-80 bg-gray-500 p-2 rounded flex justify-between gap-4 select-none cursor-pointer items-center whitespace-nowrap overflow-hidden" :class="{'line-through !bg-gray-700': element.completed}">
                         <input
                             type="checkbox"
                             :checked="element.completed"
                             :class="{'opacity-20': element.completed}"
                             @change="updateTask(element.id, element.name, element.completed, element.order)"
+                            @click.stop
                         />
+                        <span class="flex-grow truncate">
+                            {{ element.name }}
+                        </span>
+                        <Icon name="icon-park-outline:drag" class="flex-shrink-0"></Icon>
                     </span>
                 </template>
             </draggable>
