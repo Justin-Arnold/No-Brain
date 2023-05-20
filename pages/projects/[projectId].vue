@@ -83,13 +83,14 @@ const move = (moveEvent: any) => {
             :move="move"
             >
                 <template #item="{element}">
-                    <span class="bg-white/10 p-2 rounded flex justify-between gap-4 select-none cursor-pointer" :class="{'line-through opacity-50': element.completed}">
+                    <span class="bg-gray-500 p-2 rounded flex justify-between gap-4 select-none cursor-pointer" :class="{'line-through !bg-gray-700': element.completed}">
                         <span>
                             {{ element.name }}
                         </span>
                         <input
                             type="checkbox"
                             :checked="element.completed"
+                            :class="{'opacity-20': element.completed}"
                             @change="updateTask(element.id, element.name, element.completed, element.order)"
                         />
                     </span>
@@ -100,7 +101,7 @@ const move = (moveEvent: any) => {
             <input type="text" v-model="newTask" placeholder="Add a new task">
             <button @click="addTask">Add</button>
             <div class="overflow-y-auto flex flex-col gap-2">
-                <span v-for="note in project?.notes" class="bg-white/10 p-2 rounded flex flex-col justify-between gap-4">
+                <span v-for="note in project?.notes" class="bg-gray-500 p-2 rounded flex flex-col justify-between gap-4">
                     <span class="text-lg font-semibold">{{ note.name }}</span>
                     <span>{{ note.content }}</span>
                 </span>
