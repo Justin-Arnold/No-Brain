@@ -2,7 +2,8 @@
 export default defineNuxtConfig({
     modules: [
         'nuxt-windicss',
-        '@nuxtjs/supabase'
+        '@nuxtjs/supabase',
+        'nuxt-icon'
     ],
     css: [
         "primevue/resources/themes/lara-light-blue/theme.css",
