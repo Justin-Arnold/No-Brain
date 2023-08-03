@@ -32,7 +32,7 @@ const items = ref([
     },
 ]);
 
-const toggle = (event: any) => {
+const toggle = (event: MouseEvent) => {
     menuTemplateRef.value.ref.toggle(event); // TODO - Clean up this ref passthrough
 };
 </script>

@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import Menu from "primevue/menu";
+import type { MenuItem } from "primevue/menuitem";
 
 // ====================
 // Component API
 // ====================
 defineProps<{
-    items: any[]; // TODO - remove any
+    items: MenuItem[];
     popup: boolean;
 }>();
 

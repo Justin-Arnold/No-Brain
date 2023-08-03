@@ -1,6 +1,6 @@
 {
     "name": "planote",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "scripts": {
         "build": "nuxt build",
         "vercel-build": "prisma generate && prisma migrate deploy && nuxt build",
@@ -25,6 +25,7 @@
         "nuxt": "^3.6.5",
         "nuxt-icon": "^0.4.1",
         "prettier": "^3.0.0",
+        "prettier-plugin-tailwindcss": "^0.4.1",
         "prisma": "^5.1.0",
         "typescript": "^5.1.6"
     },
@@ -39,6 +40,9 @@
         "zod": "^3.21.4"
     },
     "prettier": {
-        "tabWidth": 4
+        "tabWidth": 4,
+        "plugins": [
+            "prettier-plugin-tailwindcss"
+        ]
     }
 }

@@ -16,11 +16,11 @@ defineEmits<{
 <template>
     <span class="relative">
         <InputTextBase :placeholder="STRINGS.PLACEHOLDER" v-bind="$attrs" />
-        <span class="absolute top-0 right-3 h-full flex items-center">
+        <span class="absolute right-3 top-0 flex h-full items-center">
             <Icon
                 name="icon-park-outline:add-two"
                 size="1.6rem"
-                class="hover:text-purple-200 transition-all duration-300 cursor-pointer"
+                class="cursor-pointer transition-all duration-300 hover:text-purple-200"
                 @click="$emit('icon-clicked')"
             />
         </span>

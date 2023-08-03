@@ -1,7 +1,7 @@
 <template>
-    <div class="h-screen w-screen fixed top-0 left-0 flex">
+    <div class="fixed left-0 top-0 flex h-screen w-screen">
         <AppSidebar></AppSidebar>
-        <div class="grow overflow-hidden p-8 w-full">
+        <div class="w-full grow overflow-hidden p-8">
             <slot />
         </div>
     </div>
