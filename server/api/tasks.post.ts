@@ -1,11 +1,9 @@
-import { log } from "console";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
 export default defineEventHandler(async (event) => {
     const body = await readBody(event);
-    log(body);
     if (!body) {
         return new Response("No body", { status: 400 });
     }
