@@ -12,5 +12,7 @@
     "parserOptions": {
         "parser": "@typescript-eslint/parser"
     },
-    "rules": {}
+    "rules": {
+        "@typescript-eslint/no-explicit-any": "error"
+    }
 }
