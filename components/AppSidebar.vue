@@ -39,22 +39,22 @@ if (!nuxtApp.$refreshSidebar) {
 
 <template>
     <div
-        class="w-60 bg-black/50 p-4 text-white flex flex-col gap-4 items-center flex-shrink-0"
+        class="flex w-60 flex-shrink-0 flex-col items-center gap-4 bg-black/50 p-4 text-white"
     >
         <div
-            class="flex gap-4 items-center cursor-pointer user-select-none"
+            class="user-select-none flex cursor-pointer items-center gap-4"
             @click="navigateTo('/')"
         >
             <img src="~/assets/images/logo.png" class="h-12" />
             <h1 class="text-4xl font-bold">Planote</h1>
         </div>
-        <nav class="flex-grow w-full">
+        <nav class="w-full flex-grow">
             <div v-if="pending" height="2rem" class="mb-2"></div>
             <ul v-else class="flex flex-col gap-4">
                 <li
                     v-for="each in projects"
                     :key="each.id"
-                    class="bg-white/5 rounded text-center p-2 w-full"
+                    class="w-full rounded bg-white/5 p-2 text-center"
                 >
                     <NuxtLink
                         :to="`/projects/${each.id}` + '?id=' + userID"

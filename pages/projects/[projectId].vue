@@ -132,7 +132,7 @@ function confirmDelete() {
 <template>
     <div>
         <div class="flex items-center justify-between">
-            <div class="flex gap-2 items-center">
+            <div class="flex items-center gap-2">
                 <InputTextBase
                     v-if="editMode"
                     v-model="newName"
@@ -147,8 +147,8 @@ function confirmDelete() {
             <BaseConfirmDialog />
         </div>
         <hr class="mb-4 mt-1" />
-        <div class="w-full flex flex-col h-full items-center">
-            <div class="h-full flex flex-col gap-4 flex-shrink-0 min-w-[600px]">
+        <div class="flex h-full w-full flex-col items-center">
+            <div class="flex h-full min-w-[600px] flex-shrink-0 flex-col gap-4">
                 <InputTextNewTask
                     v-model="newTask"
                     @keyup.enter="addTask"
@@ -158,7 +158,7 @@ function confirmDelete() {
                     v-model="sortedTasks"
                     item-key="id"
                     tag="span"
-                    class="flex flex-col gap-2 flex-grow overflow-y-auto"
+                    class="flex flex-grow flex-col gap-2 overflow-y-auto"
                     :move="move"
                     @start="drag = true"
                     @end="drag = false"
@@ -166,7 +166,7 @@ function confirmDelete() {
                     <template #item="{ element }">
                         <span
                             :id="element.id"
-                            class="w-full flex-shrink-0 bg-gray-500 p-2 rounded flex justify-between gap-4 select-none cursor-pointer items-center whitespace-nowrap overflow-hidden"
+                            class="flex w-full flex-shrink-0 cursor-pointer select-none items-center justify-between gap-4 overflow-hidden whitespace-nowrap rounded bg-gray-500 p-2"
                             :class="{ '!bg-gray-700': element.completed }"
                             @click="expandSelf(element.id)"
                         >

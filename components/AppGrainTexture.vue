@@ -18,7 +18,7 @@
 
 <style>
 body::before {
-    @apply absolute left-0 top-0 content-none w-full h-full z-[9999] opacity-30 pointer-events-none;
+    @apply pointer-events-none absolute left-0 top-0 z-[9999] h-full w-full opacity-30 content-none;
     filter: url(#grainy);
 }
 </style>
