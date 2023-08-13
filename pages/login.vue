@@ -37,21 +37,16 @@ const { values, errors, handleSubmit, defineInputBinds, resetForm } =
 const email = defineInputBinds("email");
 const password = defineInputBinds("password");
 
-const onSubmit = handleSubmit((values) => {
-    client.auth.signInWithPassword({
-        email: values.email,
-        password: values.password,
-    });
-});
-
-// -------------------------
-// Redirect
-// -------------------------
-
-watch(user, () => {
-    if (user.value) {
-        navigateTo("/");
-    }
+const onSubmit = handleSubmit(async (values) => {
+        const {data, error} = await client.auth.signInWithPassword({
+            email: values.email,
+            password: values.password,
+        });
+        if (error) {
+            console.error(error);
+        } else {
+            navigateTo("/");
+        }
 });
 
 function signUp() {
