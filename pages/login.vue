@@ -10,6 +10,8 @@ definePageMeta({
     layout: false,
 });
 
+const isLoginPending = ref(false);
+
 // -------------------------
 // Schema
 // -------------------------
@@ -29,27 +31,31 @@ type LoginForm = z.infer<typeof loginFormSchema>;
 // -------------------------
 // Form
 // -------------------------
-const { values, errors, handleSubmit, defineInputBinds, resetForm } =
-    useForm<LoginForm>({
-        validationSchema: toTypedSchema(loginFormSchema),
-    });
+const {
+    values,
+    errors,
+    handleSubmit,
+    defineInputBinds,
+    resetForm,
+    setFieldError,
+} = useForm<LoginForm>({
+    validationSchema: toTypedSchema(loginFormSchema),
+});
 
 const email = defineInputBinds("email");
 const password = defineInputBinds("password");
 
-const onSubmit = handleSubmit((values) => {
-    client.auth.signInWithPassword({
+const onSubmit = handleSubmit(async (values) => {
+    isLoginPending.value = true;
+    const { error } = await client.auth.signInWithPassword({
         email: values.email,
         password: values.password,
     });
-});
-
-// -------------------------
-// Redirect
-// -------------------------
-
-watch(user, () => {
-    if (user.value) {
+    isLoginPending.value = false;
+    if (error) {
+        setFieldError("email", error.message);
+        setFieldError("password", error.message);
+    } else {
         navigateTo("/");
     }
 });
@@ -99,12 +105,12 @@ function signUp() {
                     }}</small>
                     <!-- <div class="flex items-center gap-2 text-slate-300 text-xs pb-8"><input type="checkbox" name="remember" value="true" />Remember Me</div> -->
                 </div>
-                <button
+                <BaseButton
                     type="submit"
-                    class="mt-4 w-full rounded bg-gradient-to-r from-purple-800 to-fuchsia-700 py-1"
-                >
-                    Login
-                </button>
+                    class="mt-4"
+                    label="Login"
+                    :loading="isLoginPending"
+                />
             </form>
             <p class="mt-2 text-center text-xs font-light text-slate-300">
                 Don't have an account? Click
