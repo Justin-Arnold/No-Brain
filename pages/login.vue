@@ -29,24 +29,31 @@ type LoginForm = z.infer<typeof loginFormSchema>;
 // -------------------------
 // Form
 // -------------------------
-const { values, errors, handleSubmit, defineInputBinds, resetForm } =
-    useForm<LoginForm>({
-        validationSchema: toTypedSchema(loginFormSchema),
-    });
+const {
+    values,
+    errors,
+    handleSubmit,
+    defineInputBinds,
+    resetForm,
+    setFieldError,
+} = useForm<LoginForm>({
+    validationSchema: toTypedSchema(loginFormSchema),
+});
 
 const email = defineInputBinds("email");
 const password = defineInputBinds("password");
 
 const onSubmit = handleSubmit(async (values) => {
-        const {data, error} = await client.auth.signInWithPassword({
-            email: values.email,
-            password: values.password,
-        });
-        if (error) {
-            console.error(error);
-        } else {
-            navigateTo("/");
-        }
+    const { error } = await client.auth.signInWithPassword({
+        email: values.email,
+        password: values.password,
+    });
+    if (error) {
+        setFieldError("email", error.message);
+        setFieldError("password", error.message);
+    } else {
+        navigateTo("/");
+    }
 });
 
 function signUp() {
