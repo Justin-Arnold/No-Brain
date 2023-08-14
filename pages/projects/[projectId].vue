@@ -127,6 +127,14 @@ function confirmDelete() {
         },
     });
 }
+
+function deleteTask(id: number) {
+    useFetch(`/api/tasks/${id}`, {
+        method: "DELETE",
+    }).then(() => {
+        refresh();
+    });
+}
 </script>
 
 <template>
@@ -192,8 +200,10 @@ function confirmDelete() {
                                 {{ element.name }}
                             </span>
                             <Icon
-                                name="icon-park-outline:drag"
-                                class="flex-shrink-0"
+                                name="mdi:trash"
+                                size="24"
+                                class="flex-shrink-0 hover:text-red-400 transition-colors duration-300"
+                                @click="deleteTask(element.id)"
                             ></Icon>
                         </span>
                     </template>
