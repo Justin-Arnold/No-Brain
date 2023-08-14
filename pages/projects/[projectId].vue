@@ -127,17 +127,25 @@ function confirmDelete() {
         },
     });
 }
+
+function deleteTask(id: number) {
+    useFetch(`/api/tasks/${id}`, {
+        method: "DELETE",
+    }).then(() => {
+        refresh();
+    });
+}
 </script>
 
 <template>
     <div>
         <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
-                <InputTextBase
+                <BaseInputText
                     v-if="editMode"
                     v-model="newName"
                     @keydown.enter="updateProjectName(newName)"
-                ></InputTextBase>
+                ></BaseInputText>
                 <h1 v-else>{{ project?.name }}</h1>
             </div>
             <ProjectsContextMenuButton
@@ -192,8 +200,10 @@ function confirmDelete() {
                                 {{ element.name }}
                             </span>
                             <Icon
-                                name="icon-park-outline:drag"
-                                class="flex-shrink-0"
+                                name="mdi:trash"
+                                size="24"
+                                class="flex-shrink-0 hover:text-red-400 transition-colors duration-300"
+                                @click="deleteTask(element.id)"
                             ></Icon>
                         </span>
                     </template>
