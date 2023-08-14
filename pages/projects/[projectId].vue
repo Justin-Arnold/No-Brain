@@ -133,11 +133,11 @@ function confirmDelete() {
     <div>
         <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
-                <InputTextBase
+                <BaseInputText
                     v-if="editMode"
                     v-model="newName"
                     @keydown.enter="updateProjectName(newName)"
-                ></InputTextBase>
+                ></BaseInputText>
                 <h1 v-else>{{ project?.name }}</h1>
             </div>
             <ProjectsContextMenuButton
