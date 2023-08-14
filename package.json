@@ -1,6 +1,6 @@
 {
     "name": "planote",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "scripts": {
         "build": "nuxt build",
         "vercel-build": "prisma generate && prisma migrate deploy && nuxt build",
