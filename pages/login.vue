@@ -83,7 +83,7 @@ function signUp() {
             <form class="flex flex-col gap-2 text-white" @submit="onSubmit">
                 <div class="flex flex-col">
                     <label for="plcGroupName"> Email </label>
-                    <input
+                    <BaseInputText
                         id="plcGroupEmail"
                         v-bind="email"
                         class="rounded p-1"
@@ -94,7 +94,7 @@ function signUp() {
                 </div>
                 <div class="flex flex-col">
                     <label for="plcGroupName"> Password </label>
-                    <input
+                    <BaseInputText
                         id="plcGroupPassword"
                         type="password"
                         v-bind="password"
