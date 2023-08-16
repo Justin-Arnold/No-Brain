@@ -8,6 +8,7 @@ type ProjectPostBody = {
 const prisma = new PrismaClient();
 
 export default defineEventHandler(async (event) => {
+    routeAuth(event);
     const body = await readBody<ProjectPostBody>(event);
     if (!body.name) {
         throw createError({
