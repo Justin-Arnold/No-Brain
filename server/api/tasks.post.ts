@@ -3,6 +3,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export default defineEventHandler(async (event) => {
+    routeAuth(event);
     const body = await readBody(event);
     if (!body) {
         return new Response("No body", { status: 400 });
