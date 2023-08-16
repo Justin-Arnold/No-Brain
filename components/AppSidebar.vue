@@ -60,7 +60,7 @@ if (!nuxtApp.$refreshSidebar) {
                 </li>
             </ul>
         </nav>
-        <BaseButton label="Add" text-only @click="newProject" />
+        <BaseButton label="New Project" text-only @click="newProject" />
         <BaseButton label="Logout" @click="signOut" />
     </div>
 </template>
