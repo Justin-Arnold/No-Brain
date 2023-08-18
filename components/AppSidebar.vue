@@ -27,7 +27,7 @@ const newProject = async () => {
 
 async function signOut() {
     await client.auth.signOut();
-    navigateTo("/login");
+    navigateTo("/auth");
 }
 
 const nuxtApp = useNuxtApp();
