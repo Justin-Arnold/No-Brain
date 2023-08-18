@@ -1,11 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-    // postcss: {
-    //     plugins: {
-    //         tailwindcss: {},
-    //         autoprefixer: {},
-    //     },
-    // },
     modules: [
         "@nuxtjs/supabase",
         "nuxt-icon",
@@ -18,5 +12,13 @@ export default defineNuxtConfig({
     ],
     build: {
         transpile: ["primevue"],
+    },
+    vite: {
+        vue: {
+            script: {
+                defineModel: true,
+                propsDestructure: true,
+            },
+        },
     },
 });

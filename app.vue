@@ -8,9 +8,11 @@
 </template>
 
 <style>
+
 body {
-    @apply bg-slate-800;
+    @apply bg-[var(--surface-ground)];
 }
+
 h1 {
     @apply text-5xl font-bold;
 }

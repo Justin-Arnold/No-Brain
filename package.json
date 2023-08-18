@@ -1,6 +1,6 @@
 {
     "name": "planote",
-    "version": "0.3.0",
+    "version": "0.4.0",
     "scripts": {
         "build": "nuxt build",
         "vercel-build": "prisma generate && prisma migrate deploy && nuxt build",
@@ -35,6 +35,7 @@
         "@vee-validate/nuxt": "^4.10.7",
         "@vee-validate/zod": "^4.10.7",
         "primevue": "^3.28.0",
+        "tailwindcss-base-font-size": "~1.0.0",
         "vee-validate": "^4.10.7",
         "vuedraggable": "^4.1.0",
         "zod": "^3.21.4"
