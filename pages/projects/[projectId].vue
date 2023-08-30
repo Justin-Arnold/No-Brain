@@ -102,7 +102,7 @@ const refreshSidebar = nuxtApp.$refreshSidebar as () => void;
 function updateProjectName(name: string) {
     useFetch(`/api/projects/${projectId}`, {
         method: "PUT",
-        body: { name },
+        body: { name: name },
     }).then(() => {
         editMode.value = false;
         refreshSidebar();

@@ -1,32 +1,26 @@
 import { PrismaClient } from "@prisma/client";
+import { z } from "zod";
 
-type ProjectPostBody = {
-    name: string;
-    userId: string;
-};
+const bodySchema = z.object({
+    name: z.string(),
+    userId: z.string().uuid({
+        message: "userId must be a valid UUID",
+    }),
+});
+
 
 const prisma = new PrismaClient();
 
 export default defineEventHandler(async (event) => {
     routeAuth(event);
-    const body = await readBody<ProjectPostBody>(event);
-    if (!body.name) {
-        throw createError({
-            statusCode: 400,
-            statusMessage: "Missing name",
-        });
-    }
-    if (!body.userId) {
-        throw createError({
-            statusCode: 400,
-            statusMessage: "Missing user ID",
-        });
-    }
+    const body = await readBody(event);
+    const parsedBody = parseData(body, bodySchema);
+
     try {
         const task = await prisma.project.create({
             data: {
-                name: body.name,
-                user_id: body.userId,
+                name: parsedBody.name,
+                user_id: parsedBody.userId,
             },
         });
         return task;

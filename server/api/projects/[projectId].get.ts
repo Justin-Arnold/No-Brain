@@ -1,29 +1,32 @@
 import { PrismaClient } from "@prisma/client";
+import { z } from 'zod';
+
+const paramsSchema = z.object({
+    projectId: z.string().uuid({
+        message: "projectId must be a valid UUID",
+    }),
+});
+
+const querySchema = z.object({
+    id: z.string().uuid({
+        message: "id must be a valid UUID",
+    }),
+});
+
+
 
 const prisma = new PrismaClient();
 
 export default defineEventHandler(async (event) => {
+
     routeAuth(event);
-    const params = event.context.params;
-    if (!params) {
-        throw createError({
-            statusCode: 401,
-            statusMessage: "Project ID Missing",
-        });
-    }
-    const projectId = params.projectId;
+    const parsedParams = parseData(event.context.params, paramsSchema);
     const query = getQuery(event);
-    if (!query.id) {
-        throw createError({
-            statusCode: 400,
-            statusMessage: "Missing ID for authenticated user on request",
-        });
-    }
-    const authenticatedID = JSON.stringify(query.id);
-    const parsedID = authenticatedID.replace(/['"]+/g, ""); // TODO Figure out why it is necessary to remove quotes from the ID
+    const parsedQuery = parseData(query, querySchema);
+
     const project = await prisma.project.findFirst({
         where: {
-            id: projectId,
+            id: parsedParams.projectId,
         },
         include: {
             tasks: true,
@@ -36,7 +39,7 @@ export default defineEventHandler(async (event) => {
             statusMessage: "Project not found",
         });
     }
-    if (project.user?.id === parsedID) {
+    if (project.user?.id === parsedQuery.id) {
         return project;
     } else {
         throw createError({
