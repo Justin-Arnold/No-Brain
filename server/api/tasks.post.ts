@@ -1,32 +1,28 @@
 import { PrismaClient } from "@prisma/client";
+import { z } from "zod";
+
+const bodySchema = z.object({
+    name: z.string(),
+    projectId: z.string().uuid({
+        message: "projectId must be a valid UUID",
+    }),
+    order: z.number(),
+});
 
 const prisma = new PrismaClient();
 
 export default defineEventHandler(async (event) => {
     routeAuth(event);
     const body = await readBody(event);
-    if (!body) {
-        return new Response("No body", { status: 400 });
-    }
-    if (!body.name) {
-        return new Response("No name", { status: 400 });
-    }
-
-    if (!body.projectId) {
-        return new Response("No projectId", { status: 400 });
-    }
-
-    if (!body.order) {
-        return new Response("No order set on task", { status: 400 });
-    }
+    const parsedBody = parseData(body, bodySchema);
 
     const task = await prisma.task.create({
         data: {
-            name: body.name,
-            order: parseInt(body.order),
+            name: parsedBody.name,
+            order: parsedBody.order,
             project: {
                 connect: {
-                    id: body.projectId,
+                    id: parsedBody.projectId,
                 },
             },
         },
