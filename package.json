@@ -31,7 +31,6 @@
     },
     "dependencies": {
         "@prisma/client": "^5.1.0",
-        "@sidebase/nuxt-parse": "^0.3.0",
         "@vee-validate/nuxt": "^4.10.7",
         "@vee-validate/zod": "^4.10.7",
         "primevue": "^3.28.0",
