@@ -1,20 +1,21 @@
 import { PrismaClient } from "@prisma/client";
+import { z } from "zod";
+
+const paramsSchema = z.object({
+    taskId: z.string().uuid({
+        message: "taskId must be a valid UUID",
+    }),
+});
 
 const prisma = new PrismaClient();
 
 export default defineEventHandler(async (event) => {
-    const params = event.context.params;
-    if (!params) {
-        throw createError({
-            statusCode: 401,
-            statusMessage: "Task ID Missing",
-        });
-    }
-    console.log(params);
+    const parsedParams = parseData(event.context.params, paramsSchema)
+
     try {
         const task = await prisma.task.delete({
             where: {
-                id: params.taskId,
+                id: parsedParams.taskId,
             },
         });
         if (!task) {
