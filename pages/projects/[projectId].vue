@@ -5,7 +5,6 @@ import type { TaskUpdateBody } from "~/server/api/tasks/[taskId].put";
 
 definePageMeta({
     middleware: "authentication",
-    layout: "app-layout",
 });
 
 const route = useRoute();
