@@ -40,8 +40,11 @@ function createArea() {
                 {{ area.name}}
             </template>
             <p>description text</p>
-            <template #footer>
-                <BaseButton label="Edit"></BaseButton>
+            <template #footer >
+                <div class="flex gap-2 justify-end">
+                    <BaseButton label="Edit" text></BaseButton>
+                    <BaseButton label="Enter" @click="navigateTo('/areas/test')"></BaseButton>
+                </div>
             </template>
         </BaseCard>
     </div>
@@ -51,4 +54,5 @@ function createArea() {
             <BaseButton label="Create Area" text-only @click="createArea()"/>
         </div>
     </div>
+    <RouterView></RouterView>
 </template>
