@@ -1,38 +1,33 @@
 <script setup lang="ts">
+import Breadcrumb from 'primevue/breadcrumb';
+
 definePageMeta({
     middleware: "authentication",
     layout: "app-layout",
 });
 
-const client = useSupabaseAuthClient();
-const user = useSupabaseUser();
+const route = useRoute();
+const fullPath = computed(() => route.fullPath.split('/').filter((item) => item !== ''));
 
-const userID = computed(() => user.value?.id);
-
-const {
-    data: projects,
-    pending,
-    refresh,
-} = await useFetch(`/api/projects`, {
-    query: { id: userID },
+const breadcrumbItems = computed(() => {
+    return fullPath.value.map((item) => {
+        return {
+            label: toTitleCase(item),
+            to: `/${item}`,
+        };
+    })
 });
+
+function toTitleCase(text: string) {
+    return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+
 
 </script>
 <template>
-    <h1 class="text-white">Projects</h1>
-
-    <ul class="flex flex-col gap-4">
-        <li v-for="each in projects" :key="each.id">
-            <NuxtLink
-
-                :to="`/projects/${each.id}` + '?id=' + userID"
-                class="w-full rounded bg-white/5 p-2 text-center inline-block hover:bg-purple-200/50"
-                active-class="text-purple-300"
-            >
-                {{ each.name }}
-            </NuxtLink>
-        </li>
-    </ul>
-    ---
-    <RouterView></RouterView>
+    <div class="flex flex-col gap-8">
+        <Breadcrumb :model="breadcrumbItems"></Breadcrumb>
+        <RouterView></RouterView>
+    </div>
 </template>
