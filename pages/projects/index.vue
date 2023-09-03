@@ -21,15 +21,15 @@ function createArea() {
 
 <template>
     <div v-if="!!projects?.length" class="grid grid-cols-auto-fill-200 lg:grid-cols-auto-fill-300 gap-4">
-        <BaseCard v-for="area, index in projects" :key="index" class="aspect-square" :pt="{ body: { class: 'flex flex-col h-full'}, content: { class: 'grow'}}">
+        <BaseCard v-for="project, index in projects" :key="index" class="aspect-square" :pt="{ body: { class: 'flex flex-col h-full'}, content: { class: 'grow'}}">
             <template #title>
-                {{ area.name}}
+                {{ project.name}}
             </template>
             <p>description text</p>
             <template #footer >
                 <div class="flex gap-2 justify-end">
                     <BaseButton label="Edit" text></BaseButton>
-                    <BaseButton label="Enter" @click="navigateTo('/areas/test')"></BaseButton>
+                    <BaseButton label="Enter" @click="navigateTo('projects/' + project.id + '?id=' + userID)"></BaseButton>
                 </div>
             </template>
         </BaseCard>
