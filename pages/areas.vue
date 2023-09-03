@@ -6,21 +6,21 @@ definePageMeta({
 });
 
 const areas = ref<any>([{
-        name: "New Area"
+        name: "Fitness"
     },{
-        name: "New Area"
+        name: "Mental Health"
     }, {
-        name: "New Area"
+        name: "Diet"
     }, {
-        name: "New Area"
+        name: "Finances"
     }, {
-        name: "New Area"
+        name: "Music"
     }, {
-        name: "New Area"
+        name: "Software Engineering"
     }, {
-        name: "New Area"
+        name: "Pets"
     }, {
-        name: "New Area"
+        name: "Plants"
     }])
 
 function createArea() {
@@ -34,9 +34,15 @@ function createArea() {
 <template>
     <h1 class="text-white">Areas</h1>
     <hr/>
-    <div v-if="!!areas.length" class="grid grid-cols-auto-fill-200 gap-4">
-        <BaseCard v-for="area, index in areas" :key="index" class="aspect-square">
-            {{ area.name}}
+    <div v-if="!!areas.length" class="grid grid-cols-auto-fill-200 lg:grid-cols-auto-fill-300 gap-4">
+        <BaseCard v-for="area, index in areas" :key="index" class="aspect-square" :pt="{ body: { class: 'flex flex-col h-full'}, content: { class: 'grow'}}">
+            <template #title>
+                {{ area.name}}
+            </template>
+            <p>description text</p>
+            <template #footer>
+                <BaseButton label="Edit"></BaseButton>
+            </template>
         </BaseCard>
     </div>
     <div v-else class="h-full grid place-items-center">
