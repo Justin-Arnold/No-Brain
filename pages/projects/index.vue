@@ -13,8 +13,15 @@ const {
     query: { id: userID },
 });
 
-function createProject() {
-    console.log('new')
+async function createProject() {
+    const resp = await useFetch(`/api/projects`, {
+        method: "POST",
+        body: JSON.stringify({
+            name: "New Project",
+            userId: userID.value,
+        }),
+    });
+    refresh();
 }
 
 
