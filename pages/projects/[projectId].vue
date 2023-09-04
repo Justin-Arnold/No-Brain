@@ -5,11 +5,10 @@ import type { TaskUpdateBody } from "~/server/api/tasks/[taskId].put";
 
 definePageMeta({
     middleware: "authentication",
-    layout: "app-layout",
 });
 
 const route = useRoute();
-const projectId = route.params.projectId;
+const projectId = route.params.projectId as string;
 const userID = route.query.id;
 const { data: project, refresh } = await useFetch(
     `/api/projects/${projectId}`,
@@ -135,6 +134,8 @@ function deleteTask(id: number) {
         refresh();
     });
 }
+
+const isSetAreaDialogOpen = ref(false);
 </script>
 
 <template>
@@ -151,8 +152,10 @@ function deleteTask(id: number) {
             <ProjectsContextMenuButton
                 @edit-name="editMode = true"
                 @delete="confirmDelete"
+                @set-area="isSetAreaDialogOpen = true"
             />
             <BaseConfirmDialog />
+            <ProjectSetAreaDialog  v-model:visible="isSetAreaDialogOpen" :project-id="projectId"/>
         </div>
         <hr class="mb-4 mt-1" />
         <div class="flex h-full w-full flex-col items-center">

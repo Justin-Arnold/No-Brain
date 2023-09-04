@@ -2,16 +2,13 @@ import { PrismaClient, Project } from "@prisma/client";
 import { z } from "zod";
 
 const paramsSchema = z.object({
-    projectId: z.string().uuid({
+    areaId: z.string().uuid({
         message: "projectId must be a valid UUID",
     }),
 });
 
 const bodySchema: z.ZodType<Partial<Project>> = z.object({
     name: z.string().optional(),
-    area_id: z.string().uuid({
-        message: "area_id must be a valid UUID",
-    }).optional()
 });
 
 
@@ -26,13 +23,13 @@ export default defineEventHandler(async (event) => {
 
         console.log("parsedParams", body, parsedBody);
     try {
-        const returnedProject = await prisma.project.update({
+        const returnedArea = await prisma.area.update({
             where: {
-                id: parsedParams.projectId,
+                id: parsedParams.areaId,
             },
             data: parsedBody,
         });
-        return returnedProject;
+        return returnedArea;
     } catch (error) {
         throw createError({
             statusCode: 500,
