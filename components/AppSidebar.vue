@@ -1,40 +1,25 @@
 <script setup lang="ts">
-const client = useSupabaseAuthClient();
-const user = useSupabaseUser();
 
-const userID = computed(() => user.value?.id);
-
-const {
-    data: projects,
-    pending,
-    refresh,
-} = await useFetch(`/api/projects`, {
-    query: { id: userID },
-});
-
-const newProject = async () => {
-    const { data, error } = await useFetch("/api/projects", {
-        method: "POST",
-        body: { name: "New Project", userId: userID.value },
-    });
-    if (error) {
-        //
-    } else if (data) {
-        //
+const topLevelRoutes = [
+    {
+        name: "Home",
+        path: "/",
+    }, {
+        name: "Projects",
+        path: "/projects",
+    }, {
+        name: "Areas",
+        path: "/areas",
     }
-    refresh();
-};
+] as const
+
+const client = useSupabaseAuthClient();
 
 async function signOut() {
     await client.auth.signOut();
     navigateTo("/auth");
 }
 
-const nuxtApp = useNuxtApp();
-// if already provided, remove it
-if (!nuxtApp.$refreshSidebar) {
-    nuxtApp.provide("refreshSidebar", refresh);
-}
 </script>
 
 <template>
@@ -46,21 +31,19 @@ if (!nuxtApp.$refreshSidebar) {
             </h1>
         </div>
         <nav class="w-full flex-grow overflow-y-auto scrollbar-hide">
-            <div v-if="pending" height="2rem" class="mb-2"></div>
-            <ul v-else class="flex flex-col gap-4">
-                <li v-for="each in projects" :key="each.id">
+            <ul class="flex flex-col gap-4">
+                <li v-for="route, index in topLevelRoutes" :key="index">
                     <NuxtLink
 
-                        :to="`/projects/${each.id}` + '?id=' + userID"
+                        :to="route.path"
                         class="w-full rounded bg-white/5 p-2 text-center inline-block hover:bg-purple-200/50"
                         active-class="text-purple-300"
                     >
-                        {{ each.name }}
+                        {{ route.name }}
                     </NuxtLink>
                 </li>
             </ul>
         </nav>
-        <BaseButton label="New Project" text-only @click="newProject" />
         <BaseButton label="Logout" @click="signOut" />
     </div>
 </template>
