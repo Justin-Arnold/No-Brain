@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import DataView from 'primevue/dataview';
 
 const user = useSupabaseUser();
 

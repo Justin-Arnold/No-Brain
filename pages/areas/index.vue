@@ -1,26 +1,25 @@
 <script setup lang="ts">
-const areas = ref<any>([{
-        name: "Fitness"
-    },{
-        name: "Mental Health"
-    }, {
-        name: "Diet"
-    }, {
-        name: "Finances"
-    }, {
-        name: "Music"
-    }, {
-        name: "Software Engineering"
-    }, {
-        name: "Pets"
-    }, {
-        name: "Plants"
-    }])
+const user = useSupabaseUser();
 
-function createArea() {
-    areas.value.push({
-        name: "New Area"
-    })
+const userID = computed(() => user.value?.id);
+
+const {
+    data: areas,
+    pending,
+    refresh,
+} = await useFetch(`/api/areas`, {
+    query: { id: userID },
+});
+
+async function createArea() {
+    const resp = await useFetch(`/api/areas`, {
+        method: "POST",
+        body: JSON.stringify({
+            name: "New Area",
+            userId: userID.value,
+        }),
+    });
+    refresh();
 }
 </script>
 
@@ -30,7 +29,7 @@ function createArea() {
             <template #title>
                 {{ area.name}}
             </template>
-            <p>description text</p>
+            <p>{{area.description}}</p>
             <template #footer >
                 <div class="flex gap-2 justify-end">
                     <BaseButton label="Edit" text></BaseButton>
