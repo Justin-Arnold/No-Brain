@@ -40,9 +40,23 @@ model Project {
     user             User?          @relation(fields: [user_id], references: [id])
     user_id          String?        @db.Uuid
     status           String?
+    area             Area?          @relation(fields: [area_id], references: [id])
+    area_id          String?        @db.Uuid
+}
+
+model Area {
+    id               String         @id @default(uuid()) @db.Uuid
+    created_at       DateTime       @default(now())
+    updated_at       DateTime       @updatedAt
+    name             String         @default("New Area")
+    description      String?
+    user             User?          @relation(fields: [user_id], references: [id])
+    user_id          String?        @db.Uuid
+    projects         Project[]
 }
 model User {
     id               String         @id @default(uuid()) @db.Uuid
     created_at       DateTime       @default(now())
     projects         Project[]
+    areas            Area[]
 }
