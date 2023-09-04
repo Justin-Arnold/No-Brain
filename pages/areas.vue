@@ -26,7 +26,7 @@ function toTitleCase(text: string) {
 
 </script>
 <template>
-    <div class="flex flex-col gap-8">
+    <div class="flex flex-col gap-8 h-full overflow-auto">
         <Breadcrumb :model="breadcrumbItems"></Breadcrumb>
         <RouterView></RouterView>
     </div>
