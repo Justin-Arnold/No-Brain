@@ -33,7 +33,7 @@ async function createArea() {
             <template #footer >
                 <div class="flex gap-2 justify-end">
                     <BaseButton label="Edit" text></BaseButton>
-                    <BaseButton label="Enter" @click="navigateTo('/areas/test')"></BaseButton>
+                    <BaseButton label="Enter" @click="navigateTo('/areas/' + area.id + '?id=' + userID )"></BaseButton>
                 </div>
             </template>
         </BaseCard>
