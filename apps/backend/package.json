@@ -1,0 +1,8 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "scripts": {},
+  "devDependencies": {
+    "supabase": "^1.207.9"
+  }
+}
