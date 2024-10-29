@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useConfirm } from "primevue/useconfirm";
 import { ZodError } from "zod";
-import type { TaskUpdateBody } from "~/server/api/tasks/[taskId].put";
+import type { TaskUpdateBody } from "ff/frontend/server/api/tasks/[taskId].put";
 
 definePageMeta({
     middleware: "authentication",
