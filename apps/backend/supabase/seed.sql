@@ -27,13 +27,13 @@ INSERT INTO public.user (id, created_at) VALUES
   ('d8d1e45f-8d4b-5e95-9d8d-8d8d4c5f6e7b', NOW());
 
 -- Insert areas for each user
-INSERT INTO public.area (id, created_at, updated_at, name, description, user_id) VALUES
+INSERT INTO public.Area (id, created_at, updated_at, name, description, user_id) VALUES
   ('a1b2c3d4-e5f6-4a5b-8c9d-1a2b3c4d5e6f', NOW(), NOW(), 'Work', 'Work-related projects and tasks', 'c9c2d34e-7c3a-4f84-8c9c-9c7c3b4e5f6a'),
   ('b2c3d4e5-f6a7-5b6c-9d0e-2b3c4d5e6f7a', NOW(), NOW(), 'Personal', 'Personal projects and goals', 'c9c2d34e-7c3a-4f84-8c9c-9c7c3b4e5f6a'),
   ('c3d4e5f6-a7b8-6c7d-0e1f-3c4d5e6f7a8b', NOW(), NOW(), 'Home', 'Home management and improvements', 'd8d1e45f-8d4b-5e95-9d8d-8d8d4c5f6e7b');
 
 -- Insert projects for each area
-INSERT INTO public.project (id, created_at, updated_at, due_at, name, description, "order", user_id, status, area_id) VALUES
+INSERT INTO public.Project (id, created_at, updated_at, due_at, name, description, "order", user_id, status, area_id) VALUES
   -- Projects for User 1's Work Area
   ('d4e5f6a7-b8c9-7d8e-1f2a-4d5e6f7a8b9c', NOW(), NOW(), NOW() + interval '30 days', 'Q4 Planning', 'Strategic planning for Q4', 1, 'c9c2d34e-7c3a-4f84-8c9c-9c7c3b4e5f6a', 'In Progress', 'a1b2c3d4-e5f6-4a5b-8c9d-1a2b3c4d5e6f'),
   ('e5f6a7b8-c9d0-8e9f-2a3b-5e6f7a8b9c0d', NOW(), NOW(), NOW() + interval '60 days', 'Website Redesign', 'Company website overhaul', 2, 'c9c2d34e-7c3a-4f84-8c9c-9c7c3b4e5f6a', 'Planning', 'a1b2c3d4-e5f6-4a5b-8c9d-1a2b3c4d5e6f'),
@@ -45,7 +45,7 @@ INSERT INTO public.project (id, created_at, updated_at, due_at, name, descriptio
   ('a7b8c9d0-e1f2-0a1b-4c5d-7a8b9c0d1e2f', NOW(), NOW(), NOW() + interval '45 days', 'Kitchen Remodel', 'Kitchen renovation project', 1, 'd8d1e45f-8d4b-5e95-9d8d-8d8d4c5f6e7b', 'Planning', 'c3d4e5f6-a7b8-6c7d-0e1f-3c4d5e6f7a8b');
 
 -- Insert tasks for each project
-INSERT INTO task (id, created_at, updated_at, due_at, name, description, "order", completed, project_id, parent_id) VALUES
+INSERT INTO public.Task (id, created_at, updated_at, due_at, name, description, "order", completed, project_id, parent_id) VALUES
   -- Tasks for Q4 Planning Project
   ('b8c9d0e1-f2a3-1b2c-5d6e-8b9c0d1e2f3a', NOW(), NOW(), NOW() + interval '7 days', 'Review Q3 Metrics', 'Analyze Q3 performance data', 1, false, 'd4e5f6a7-b8c9-7d8e-1f2a-4d5e6f7a8b9c', null),
   ('c9d0e1f2-a3b4-2c3d-6e7f-9c0d1e2f3a4b', NOW(), NOW(), NOW() + interval '14 days', 'Draft Strategy Document', 'Create Q4 strategy outline', 2, false, 'd4e5f6a7-b8c9-7d8e-1f2a-4d5e6f7a8b9c', null),

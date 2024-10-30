@@ -2,6 +2,7 @@ import { z } from 'zod'
 
 export default function parseData<T>(data: Record<any, any> | undefined, schema: z.ZodType<T>) {
     try {
+        console.log('d', data)
         return schema.parse(data)
     } catch (error) {
         if (error instanceof z.ZodError) {

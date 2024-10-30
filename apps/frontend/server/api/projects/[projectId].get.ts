@@ -1,10 +1,8 @@
-import { PrismaClient } from "@prisma/client";
+import { serverSupabaseClient } from '#supabase/server'
 import { z } from 'zod';
 
 const paramsSchema = z.object({
-    projectId: z.string().uuid({
-        message: "projectId must be a valid UUID",
-    }),
+    projectId: z.string(),
 });
 
 const querySchema = z.object({
@@ -13,34 +11,30 @@ const querySchema = z.object({
     }),
 });
 
-
-
-const prisma = new PrismaClient();
-
 export default defineEventHandler(async (event) => {
 
     routeAuth(event);
     const parsedParams = parseData(event.context.params, paramsSchema);
-    const query = getQuery(event);
-    const parsedQuery = parseData(query, querySchema);
 
-    const project = await prisma.project.findFirst({
-        where: {
-            id: parsedParams.projectId,
-        },
-        include: {
-            tasks: true,
-            user: true,
-        },
-    });
-    if (project === null) {
+    const query = getQuery(event);
+
+    const parsedQuery = parseData(query, querySchema);
+    const client = await serverSupabaseClient(event)
+
+    const { data } = await client.from('project').select(`*, user(*), task(*)`)
+        .eq('id', parsedParams.projectId)
+        .single();
+
+    console.log('data', data)
+
+    if (data === null) {
         throw createError({
             statusCode: 404,
             statusMessage: "Project not found",
         });
     }
-    if (project.user?.id === parsedQuery.id) {
-        return project;
+    if (data.user_id === parsedQuery.id) {
+        return data;
     } else {
         throw createError({
             statusCode: 401,

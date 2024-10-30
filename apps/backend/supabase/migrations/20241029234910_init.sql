@@ -1,8 +1,8 @@
 -- CreateTable
-CREATE TABLE task (
-    "id" UUID NOT NULL,
+CREATE TABLE Task (
+    "id" UUID NOT NULL DEFAULT uuid_generate_v4(),
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMP(3) NOT NULL,
+    "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "due_at" TIMESTAMP(3),
     "name" TEXT NOT NULL DEFAULT 'New Task',
     "description" TEXT,
@@ -12,11 +12,11 @@ CREATE TABLE task (
     "parent_id" UUID,
     "subtask_id" UUID,
 
-    CONSTRAINT "task_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Task_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE project (
+CREATE TABLE Project (
     "id" UUID NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
@@ -28,7 +28,7 @@ CREATE TABLE project (
     "area_id" UUID,
     "status" TEXT,
 
-    CONSTRAINT "project_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Project_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -40,7 +40,7 @@ CREATE TABLE "user" (
 );
 
 -- CreateTable
-CREATE TABLE area (
+CREATE TABLE Area (
     "id" UUID NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
@@ -48,22 +48,22 @@ CREATE TABLE area (
     "description" TEXT,
     "user_id" UUID,
 
-    CONSTRAINT "area_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Area_pkey" PRIMARY KEY ("id")
 );
 
 -- AddForeignKey
-ALTER TABLE project ADD CONSTRAINT "project_area_id_fkey" FOREIGN KEY ("area_id") REFERENCES "area"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE Project ADD CONSTRAINT "project_area_id_fkey" FOREIGN KEY ("area_id") REFERENCES "area"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE project ADD CONSTRAINT "project_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE Project ADD CONSTRAINT "project_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE area ADD CONSTRAINT "area_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE Area ADD CONSTRAINT "area_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE task ADD CONSTRAINT "task_project_id_fkey" FOREIGN KEY ("project_id") REFERENCES "project"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE Task ADD CONSTRAINT "task_project_id_fkey" FOREIGN KEY ("project_id") REFERENCES "project"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE task ADD CONSTRAINT "task_parent_id_fkey" FOREIGN KEY ("parent_id") REFERENCES "task"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE Task ADD CONSTRAINT "task_parent_id_fkey" FOREIGN KEY ("parent_id") REFERENCES "task"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 

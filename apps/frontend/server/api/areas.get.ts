@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { serverSupabaseClient } from '#supabase/server'
 import { z } from 'zod';
 
 const querySchema = z.object({
@@ -7,18 +7,13 @@ const querySchema = z.object({
     }),
 });
 
-const prisma = new PrismaClient();
-
 
 export default defineEventHandler(async (event) => {
     routeAuth(event);
     const query = getQuery(event);
     const parsedQuery = parseData(query, querySchema);
 
-    const areas = await prisma.area.findMany({
-        where: {
-            user_id: parsedQuery.id,
-        },
-    });
-    return areas;
+    const client = await serverSupabaseClient(event)
+    const { data } = await client.from('area').select('*').eq('user_id', parsedQuery.id);
+    return data;
 });

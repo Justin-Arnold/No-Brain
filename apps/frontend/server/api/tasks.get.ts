@@ -1,12 +1,9 @@
-import { PrismaClient } from "@prisma/client";
+import { serverSupabaseClient } from '#supabase/server'
 
-const prisma = new PrismaClient();
 
-export default defineEventHandler((event) => {
+export default defineEventHandler(async (event) => {
     routeAuth(event);
-    return prisma.task.findMany({
-        include: {
-            project: true,
-        },
-    });
+    const client = await serverSupabaseClient(event)
+    const { data } = await client.from('task').select('*, project(*)')
+    return data;
 });

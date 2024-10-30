@@ -1,32 +1,28 @@
-import { PrismaClient } from "@prisma/client";
+import { serverSupabaseClient } from '#supabase/server'
+import { randomUUID } from 'crypto';
 import { z } from "zod";
 
 const bodySchema = z.object({
     name: z.string(),
-    projectId: z.string().uuid({
-        message: "projectId must be a valid UUID",
-    }),
+    projectId: z.string(),
     order: z.number(),
 });
-
-const prisma = new PrismaClient();
 
 export default defineEventHandler(async (event) => {
     routeAuth(event);
     const body = await readBody(event);
     const parsedBody = parseData(body, bodySchema);
 
-    const task = await prisma.task.create({
-        data: {
-            name: parsedBody.name,
-            order: parsedBody.order,
-            project: {
-                connect: {
-                    id: parsedBody.projectId,
-                },
-            },
-        },
-    });
+    console.log('Parsed Body:', parsedBody)
 
-    return task;
+    const client = await serverSupabaseClient(event)
+    const { data, error } = await client.from('task').insert([{
+        name: parsedBody.name,
+        order: parsedBody.order,
+        project_id: parsedBody.projectId
+    }]).select()
+
+    console.log('ddd', data, error)
+
+    return data
 });

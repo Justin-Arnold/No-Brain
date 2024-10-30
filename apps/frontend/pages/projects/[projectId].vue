@@ -10,11 +10,11 @@ definePageMeta({
 const route = useRoute();
 const projectId = route.params.projectId as string;
 const userID = route.query.id;
+
+
 const { data: project, refresh } = await useFetch(
     `/api/projects/${projectId}`,
-    {
-        query: { id: userID },
-    },
+    {query: { id: userID }},
 );
 
 const newTask = ref("");
@@ -26,7 +26,7 @@ const addTask = async () => {
         body: JSON.stringify({
             name: newTask.value,
             projectId: route.params.projectId,
-            order: project.value.tasks.length + 1,
+            order: project.value.task.length + 1,
         }),
     });
     newTask.value = "";
@@ -57,7 +57,8 @@ const updateTask = async (
 const sortedTasks = computed({
     get() {
         if (!project.value) return [];
-        return project.value.tasks.sort((a, b) => a.order - b.order);
+        console.log('pv', project.value)
+        return project.value.task.sort((a, b) => a.order - b.order);
     },
     set(value) {
         value.forEach(async (task, index) => {
