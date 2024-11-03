@@ -1,5 +1,4 @@
 import { serverSupabaseClient } from '#supabase/server'
-import { randomUUID } from 'crypto';
 import { z } from "zod";
 
 const bodySchema = z.object({
@@ -13,7 +12,6 @@ export default defineEventHandler(async (event) => {
     const body = await readBody(event);
     const parsedBody = parseData(body, bodySchema);
 
-    console.log('Parsed Body:', parsedBody)
 
     const client = await serverSupabaseClient(event)
     const { data, error } = await client.from('task').insert([{
@@ -21,8 +19,6 @@ export default defineEventHandler(async (event) => {
         order: parsedBody.order,
         project_id: parsedBody.projectId
     }]).select()
-
-    console.log('ddd', data, error)
 
     return data
 });

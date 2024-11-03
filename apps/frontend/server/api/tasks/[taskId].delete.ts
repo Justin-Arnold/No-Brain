@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { serverSupabaseClient } from '#supabase/server'
 import { z } from "zod";
 
 const paramsSchema = z.object({
@@ -7,17 +7,16 @@ const paramsSchema = z.object({
     }),
 });
 
-const prisma = new PrismaClient();
-
 export default defineEventHandler(async (event) => {
     const parsedParams = parseData(event.context.params, paramsSchema)
 
     try {
-        const task = await prisma.task.delete({
-            where: {
-                id: parsedParams.taskId,
-            },
-        });
+        const client = await serverSupabaseClient(event)
+        const { data: task } = await client.from('task')
+            .delete()
+            .eq('id', parsedParams.taskId)
+            .select()
+
         if (!task) {
             throw createError({
                 statusCode: 404,
