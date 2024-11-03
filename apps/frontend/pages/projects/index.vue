@@ -6,11 +6,12 @@ const userID = computed(() => user.value?.id);
 
 const {
     data: projects,
-    pending,
     refresh,
 } = await useFetch(`/api/projects`, {
     query: { id: userID },
 });
+
+const createProjectModalIsOpen = ref(false)
 
 async function createProject() {
     const resp = await useFetch(`/api/projects`, {
@@ -22,8 +23,6 @@ async function createProject() {
     });
     refresh();
 }
-
-
 
 </script>
 
@@ -43,7 +42,8 @@ async function createProject() {
             </template>
         </BaseCard>
         <template #bottomButton>
-            <BaseButton label="Create Project" text-only @click="createProject()"/>
+            <BaseButton label="Create Project" text-only @click="createProjectModalIsOpen = true"/>
         </template>
+        <ProjectCreateDialog v-model="createProjectModalIsOpen"/>
     </NuxtLayout>
 </template>

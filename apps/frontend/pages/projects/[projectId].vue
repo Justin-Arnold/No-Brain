@@ -121,8 +121,7 @@ function confirmDelete() {
             useFetch(`/api/projects/${projectId}`, {
                 method: "DELETE",
             }).then(() => {
-                refreshSidebar();
-                navigateTo("/");
+                navigateTo("/projects");
             });
         },
     });
