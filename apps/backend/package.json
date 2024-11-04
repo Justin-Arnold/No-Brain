@@ -1,0 +1,10 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "supabase gen types --lang=typescript --local > ../frontend/types/database.types.ts"
+  },
+  "devDependencies": {
+    "supabase": "^1.207.9"
+  }
+}
