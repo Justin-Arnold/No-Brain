@@ -138,6 +138,21 @@ function deleteTask(id: number) {
     });
 }
 
+const areaName = ref('')
+
+onMounted(async () => {
+    if (!project.value) {
+        return ''
+    }
+
+    const area = await useArea(project.value?.area_id)
+
+    console.log('a', area)
+
+    areaName.value = area.value.name
+})
+
+
 const isSetAreaDialogOpen = ref(false);
 </script>
 
@@ -148,6 +163,7 @@ const isSetAreaDialogOpen = ref(false);
                 <BaseInputText v-if="editMode" v-model="newName" @keydown.enter="updateProjectName(newName)">
                 </BaseInputText>
                 <h1 v-else>{{ project?.name }}</h1>
+                <BaseTag :label="areaName" />
             </div>
             <ProjectsContextMenuButton @edit-name="editMode = true" @delete="confirmDelete"
                 @set-area="isSetAreaDialogOpen = true" />

@@ -1,50 +1,28 @@
-import { PrismaClient } from "@prisma/client";
+import { serverSupabaseClient } from '#supabase/server'
+import type { Database } from '~/types/database.types';
 import { z } from 'zod';
 
 const paramsSchema = z.object({
-    areaId: z.string().uuid({
-        message: "areaId must be a valid UUID",
-    }),
+    areaId: z.string()
 });
 
 const querySchema = z.object({
-    id: z.string().uuid({
-        message: "id must be a valid UUID",
-    }),
+    id: z.string()
 });
-
-
-
-const prisma = new PrismaClient();
 
 export default defineEventHandler(async (event) => {
 
     routeAuth(event);
     const parsedParams = parseData(event.context.params, paramsSchema);
+
     const query = getQuery(event);
     const parsedQuery = parseData(query, querySchema);
 
-    const area = await prisma.area.findFirst({
-        where: {
-            id: parsedParams.areaId,
-        },
-        include: {
-            projects: true,
-            user: true,
-        },
-    });
-    if (area === null) {
-        throw createError({
-            statusCode: 404,
-            statusMessage: "Project not found",
-        });
-    }
-    if (area.user?.id === parsedQuery.id) {
-        return area;
-    } else {
-        throw createError({
-            statusCode: 401,
-            statusMessage: "Unauthorized",
-        });
-    }
+    const client = await serverSupabaseClient<Database>(event)
+    const { data: area } = await client
+        .from('area')
+        .select('*')
+        .eq('id', parsedParams.areaId);
+
+    return area
 });
