@@ -171,7 +171,9 @@ const isSetAreaDialogOpen = ref(false);
                                         element.id,
                                         element.name,
                                         !element.completed,
-                                        element.order,
+                                        !element.completed
+                                            ? sortedTasks.length + 1
+                                            : element.order,
                                     )
                                     " @click.stop />
                             <span class="flex-grow truncate">
