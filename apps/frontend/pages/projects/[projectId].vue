@@ -9,12 +9,15 @@ definePageMeta({
 
 const route = useRoute();
 const projectId = route.params.projectId as string;
-const userID = route.query.id;
+
+
+const user = useSupabaseUser();
+const userID = computed(() => user.value?.id);
 
 
 const { data: project, refresh } = await useFetch(
     `/api/projects/${projectId}`,
-    {query: { id: userID }},
+    { query: { id: userID } },
 );
 
 const newTask = ref("");
@@ -142,50 +145,28 @@ const isSetAreaDialogOpen = ref(false);
     <div>
         <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
-                <BaseInputText
-                    v-if="editMode"
-                    v-model="newName"
-                    @keydown.enter="updateProjectName(newName)"
-                ></BaseInputText>
+                <BaseInputText v-if="editMode" v-model="newName" @keydown.enter="updateProjectName(newName)">
+                </BaseInputText>
                 <h1 v-else>{{ project?.name }}</h1>
             </div>
-            <ProjectsContextMenuButton
-                @edit-name="editMode = true"
-                @delete="confirmDelete"
-                @set-area="isSetAreaDialogOpen = true"
-            />
+            <ProjectsContextMenuButton @edit-name="editMode = true" @delete="confirmDelete"
+                @set-area="isSetAreaDialogOpen = true" />
             <BaseConfirmDialog />
-            <ProjectSetAreaDialog  v-model:visible="isSetAreaDialogOpen" :project-id="projectId"/>
+            <ProjectSetAreaDialog v-model:visible="isSetAreaDialogOpen" :project-id="projectId" />
         </div>
         <hr class="mb-4 mt-1" />
         <div class="flex h-full w-full flex-col items-center">
             <div class="flex h-full min-w-[600px] flex-shrink-0 flex-col gap-4">
-                <InputTextNewTask
-                    v-model="newTask"
-                    @keyup.enter="addTask"
-                    @icon-clicked="addTask"
-                />
-                <draggable
-                    v-model="sortedTasks"
-                    item-key="id"
-                    tag="span"
-                    class="flex flex-grow flex-col gap-2 overflow-y-auto"
-                    :move="move"
-                    @start="drag = true"
-                    @end="drag = false"
-                >
+                <InputTextNewTask v-model="newTask" @keyup.enter="addTask" @icon-clicked="addTask" />
+                <draggable v-model="sortedTasks" item-key="id" tag="span"
+                    class="flex flex-grow flex-col gap-2 overflow-y-auto" :move="move" @start="drag = true"
+                    @end="drag = false">
                     <template #item="{ element }">
-                        <span
-                            :id="element.id"
+                        <span :id="element.id"
                             class="flex w-full flex-shrink-0 cursor-pointer select-none items-center justify-between gap-4 overflow-hidden whitespace-nowrap rounded bg-gray-500 p-2"
-                            :class="{ '!bg-gray-700': element.completed }"
-                            @click="expandSelf(element.id)"
-                        >
-                            <BaseCheckbox
-                                :model-value="element.completed"
-                                :class="{ 'opacity-20': element.completed }"
-                                binary
-                                @update:model-value="
+                            :class="{ '!bg-gray-700': element.completed }" @click="expandSelf(element.id)">
+                            <BaseCheckbox :model-value="element.completed" :class="{ 'opacity-20': element.completed }"
+                                binary @update:model-value="
                                     updateTask(
                                         element.id,
                                         element.name,
@@ -196,18 +177,13 @@ const isSetAreaDialogOpen = ref(false);
                                                 : 0
                                         ].order,
                                     )
-                                "
-                                @click.stop
-                            />
+                                    " @click.stop />
                             <span class="flex-grow truncate">
                                 {{ element.name }}
                             </span>
-                            <Icon
-                                name="mdi:trash"
-                                size="24"
+                            <Icon name="mdi:trash" size="24"
                                 class="flex-shrink-0 hover:text-red-400 transition-colors duration-300"
-                                @click="deleteTask(element.id)"
-                            ></Icon>
+                                @click="deleteTask(element.id)"></Icon>
                         </span>
                     </template>
                 </draggable>

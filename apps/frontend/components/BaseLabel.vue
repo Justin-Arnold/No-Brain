@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import FloatLabel from 'primevue/floatlabel';
 
 defineProps<{
     for?: string
@@ -7,10 +8,10 @@ defineProps<{
 </script>
 
 <template>
-    <FloatLabel variant="in">
+    <component :is="label ? FloatLabel : 'div'" variant="in">
         <slot></slot>
         <label :for="for">
             {{ label }}
         </label>
-    </FloatLabel>
+    </component>
 </template>

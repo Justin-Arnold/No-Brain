@@ -1,4 +1,5 @@
 import { serverSupabaseClient } from '#supabase/server'
+import type { Database } from "../../../types/database.types"
 import { z } from 'zod';
 
 const paramsSchema = z.object({
@@ -19,13 +20,11 @@ export default defineEventHandler(async (event) => {
     const query = getQuery(event);
 
     const parsedQuery = parseData(query, querySchema);
-    const client = await serverSupabaseClient(event)
+    const client = await serverSupabaseClient<Database>(event)
 
     const { data } = await client.from('project').select(`*, user(*), task(*)`)
         .eq('id', parsedParams.projectId)
         .single();
-
-    console.log('data', data)
 
     if (data === null) {
         throw createError({
