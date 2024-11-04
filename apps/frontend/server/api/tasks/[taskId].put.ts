@@ -1,4 +1,5 @@
-import { PrismaClient } from "@prisma/client";
+import { serverSupabaseClient } from '#supabase/server'
+import type { Database } from "../../../types/database.types"
 import { z } from "zod";
 
 const paramsSchema = z.object({
@@ -18,20 +19,18 @@ const bodySchema = z.object({
 
 export type TaskUpdateBody = z.infer<typeof bodySchema>;
 
-const prisma = new PrismaClient();
-
 export default defineEventHandler(async (event) => {
     const parsedParams = parseData(event.context.params, paramsSchema)
 
     const body = await readBody(event)
     const parsedBody = parseData(body, bodySchema)
 
-    const task = await prisma.task.update({
-        where: {
-            id: parsedParams.taskId,
-        },
-        data: parsedBody,
-    });
+    const client = await serverSupabaseClient<Database>(event)
+
+    const { data: task } = await client
+        .from('task')
+        .update(parsedBody)
+        .eq('id', parsedParams.taskId)
 
     return task;
 });

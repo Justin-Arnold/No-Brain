@@ -171,11 +171,7 @@ const isSetAreaDialogOpen = ref(false);
                                         element.id,
                                         element.name,
                                         !element.completed,
-                                        project!.tasks[
-                                            !element.completed
-                                                ? project!.tasks.length - 1
-                                                : 0
-                                        ].order,
+                                        element.order,
                                     )
                                     " @click.stop />
                             <span class="flex-grow truncate">
