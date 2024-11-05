@@ -20,6 +20,11 @@ const { data: project, refresh } = await useFetch(
     { query: { id: userID } },
 );
 
+function onAreaChange(name: string) {
+    isSetAreaDialogOpen.value = false;
+    areaName.value = name
+}
+
 const newTask = ref("");
 
 const addTask = async () => {
@@ -99,8 +104,7 @@ function expandSelf(elementId: string) {
 
 const newName = ref(project?.value?.name || "");
 const editMode = ref(false);
-const nuxtApp = useNuxtApp();
-const refreshSidebar = nuxtApp.$refreshSidebar as () => void;
+
 
 function updateProjectName(name: string) {
     useFetch(`/api/projects/${projectId}`, {
@@ -108,7 +112,6 @@ function updateProjectName(name: string) {
         body: { name: name },
     }).then(() => {
         editMode.value = false;
-        refreshSidebar();
         refresh();
     });
 }
@@ -140,7 +143,7 @@ function deleteTask(id: number) {
 
 const areaName = ref('')
 
-onMounted(async () => {
+onBeforeMount(async () => {
     if (!project.value) {
         return ''
     }
@@ -168,7 +171,8 @@ const isSetAreaDialogOpen = ref(false);
             <ProjectsContextMenuButton @edit-name="editMode = true" @delete="confirmDelete"
                 @set-area="isSetAreaDialogOpen = true" />
             <BaseConfirmDialog />
-            <ProjectSetAreaDialog v-model:visible="isSetAreaDialogOpen" :project-id="projectId" />
+            <ProjectSetAreaDialog v-model:visible="isSetAreaDialogOpen" :project-id="projectId"
+                @change="onAreaChange" />
         </div>
         <hr class="mb-4 mt-1" />
         <div class="flex h-full w-full flex-col items-center">
