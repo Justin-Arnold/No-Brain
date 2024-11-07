@@ -160,23 +160,9 @@ const isSetAreaDialogOpen = ref(false);
 </script>
 
 <template>
-    <div>
-        <div class="flex items-center justify-between">
-            <div class="flex items-center gap-2">
-                <BaseInputText v-if="editMode" v-model="newName" @keydown.enter="updateProjectName(newName)">
-                </BaseInputText>
-                <h1 v-else>{{ project?.name }}</h1>
-                <BaseTag :label="areaName" />
-            </div>
-            <ProjectsContextMenuButton @edit-name="editMode = true" @delete="confirmDelete"
-                @set-area="isSetAreaDialogOpen = true" />
-            <BaseConfirmDialog />
-            <ProjectSetAreaDialog v-model:visible="isSetAreaDialogOpen" :project-id="projectId"
-                @change="onAreaChange" />
-        </div>
-        <hr class="mb-4 mt-1" />
-        <div class="flex h-full w-full flex-col items-center">
-            <div class="flex h-full min-w-[600px] flex-shrink-0 flex-col gap-4">
+    <div class="h-full overflow-hidden">
+        <div class="flex h-full w-full flex-col items-center overflow-hidden">
+            <div class="flex h-full min-w-[600px] flex-shrink-0 flex-col gap-4 overflow-hidden">
                 <InputTextNewTask v-model="newTask" @keyup.enter="addTask" @icon-clicked="addTask" />
                 <draggable v-model="sortedTasks" item-key="id" tag="span"
                     class="flex flex-grow flex-col gap-2 overflow-y-auto" :move="move" @start="drag = true"
