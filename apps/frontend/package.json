@@ -37,6 +37,7 @@
         "@vee-validate/zod": "^4.10.7",
         "primevue": "latest",
         "tailwindcss-base-font-size": "~1.0.0",
+        "tailwindcss-primeui": "^0.3.4",
         "vee-validate": "^4.10.7",
         "vuedraggable": "^4.1.0",
         "zod": "^3.21.4"
