@@ -1,5 +1,4 @@
 import { serverSupabaseClient } from '#supabase/server'
-import { cpSync } from 'fs';
 import { z } from "zod";
 
 const bodySchema = z.object({
