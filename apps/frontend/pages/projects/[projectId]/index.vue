@@ -12,15 +12,18 @@ onMounted(() => {
 
 const setNavItems = inject('setNavItems')
 
-setNavItems([
-    {
-        label: 'Overview',
-        path: 'overview'
-    }, {
-        label: 'Tasks',
-        path: 'tasks'
-    }
-])
+onMounted(() => {
+    setNavItems([
+        {
+            label: 'Overview',
+            path: 'overview'
+        }, {
+            label: 'Tasks',
+            path: 'tasks'
+        }
+    ])
+})
+
 </script>
 
 <template>

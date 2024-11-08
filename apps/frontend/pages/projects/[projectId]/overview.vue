@@ -30,13 +30,26 @@ onBeforeMount(async () => {
 
 <template>
     <div class="h-full overflow-hidden flex flex-col">
-        <div class="flex items-center justify-between">
-            <div class="flex flex-col items-start gap-2">
-                <BaseTag :label="areaName" />
-                <h1 class="text-4xl">{{ project?.name }}</h1>
-                <span class="text-lg">{{ project?.description }}</span>
+        <div class="flex justify-between gap-4">
+            <div class="flex items-center justify-between">
+                <div class="flex flex-col items-start gap-2">
+                    <BaseTag :label="areaName" />
+                    <h1 class="text-4xl">{{ project?.name }}</h1>
+                    <span class="text-lg">{{ project?.description }}</span>
+                </div>
+            </div>
+            <hr class="my-4 border-none" />
+            <div class="bg-surface-800 h-full w-[500px] p-4 rounded-md">
+                <div class="flex gap-2 items-center">
+                    <h2 class="text-lg font-medium">
+                        Milestones
+                    </h2>
+                    <span
+                        class="grid place-items-center w-fit aspect-square rounded-full bg-surface-600 p-1 cursor-pointer">
+                        <Icon name="mdi-plus"></Icon>
+                    </span>
+                </div>
             </div>
         </div>
-        <hr class="my-4 border-none" />
     </div>
 </template>
