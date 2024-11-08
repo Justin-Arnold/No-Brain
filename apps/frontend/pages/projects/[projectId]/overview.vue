@@ -41,7 +41,7 @@ onBeforeMount(async () => {
                 </div>
             </div>
             <hr class="my-4 border-none" />
-            <div class="bg-surface-800 h-full w-[500px] p-4 rounded-md">
+            <div class="bg-surface-800 h-full w-[500px] p-4 rounded-md flex flex-col">
                 <div class="flex gap-2 items-center">
                     <h2 class="text-lg font-medium">
                         Milestones
@@ -51,6 +51,13 @@ onBeforeMount(async () => {
                         @click="isMilestoneCreateDialogOpen = true">
                         <Icon name="mdi-plus"></Icon>
                     </span>
+                </div>
+                <hr class="border-t-surface-700" />
+                <div>
+                    <div v-for="milestone in project!.milestone" class="flex flex-col gap-1 bg-surface-900 rounded p-2">
+                        <span class="font-semibold">{{ milestone.name }}</span>
+                        <span class="text-gray-400">{{ milestone.description }}</span>
+                    </div>
                 </div>
             </div>
         </div>
