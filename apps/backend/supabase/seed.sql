@@ -18,47 +18,52 @@ INSERT INTO auth.users (
   email_change_token_new,
   recovery_token
 ) VALUES
-  ('00000000-0000-0000-0000-000000000000', 'c9c2d34e-7c3a-4f84-8c9c-9c7c3b4e5f6a', 'authenticated', 'authenticated', 'user1@test.com', crypt('test123!', gen_salt('bf')), NOW(), null, null, '{"provider":"email","providers":["email"]}', '{}', NOW(), NOW(), '', '', '', ''),
-  ('00000000-0000-0000-0000-000000000000', 'd8d1e45f-8d4b-5e95-9d8d-8d8d4c5f6e7b', 'authenticated', 'authenticated', 'user2@test.com', crypt('test123!', gen_salt('bf')), NOW(), null, null, '{"provider":"email","providers":["email"]}', '{}', NOW(), NOW(), '', '', '', '');
+  ('00000000-0000-0000-0000-000000000000', '3b6513a7-87a3-4e83-a3f4-1c247fc8088f', 'authenticated', 'authenticated', 'user1@test.com', crypt('test123!', gen_salt('bf')), NOW(), null, null, '{"provider":"email","providers":["email"]}', '{}', NOW(), NOW(), '', '', '', ''),
+  ('00000000-0000-0000-0000-000000000000', '44836706-c0a4-49d3-9d50-2f427f947fcc', 'authenticated', 'authenticated', 'user2@test.com', crypt('test123!', gen_salt('bf')), NOW(), null, null, '{"provider":"email","providers":["email"]}', '{}', NOW(), NOW(), '', '', '', '');
 
 -- Insert application users (matching auth.users IDs)
 INSERT INTO public.user (id, created_at) VALUES
-  ('c9c2d34e-7c3a-4f84-8c9c-9c7c3b4e5f6a', NOW()),
-  ('d8d1e45f-8d4b-5e95-9d8d-8d8d4c5f6e7b', NOW());
+  ('3b6513a7-87a3-4e83-a3f4-1c247fc8088f', NOW()),
+  ('44836706-c0a4-49d3-9d50-2f427f947fcc', NOW());
 
 -- Insert areas for each user
 INSERT INTO public.Area (id, created_at, updated_at, name, description, user_id) VALUES
-  ('a1b2c3d4-e5f6-4a5b-8c9d-1a2b3c4d5e6f', NOW(), NOW(), 'Work', 'Work-related projects and tasks', 'c9c2d34e-7c3a-4f84-8c9c-9c7c3b4e5f6a'),
-  ('b2c3d4e5-f6a7-5b6c-9d0e-2b3c4d5e6f7a', NOW(), NOW(), 'Personal', 'Personal projects and goals', 'c9c2d34e-7c3a-4f84-8c9c-9c7c3b4e5f6a'),
-  ('c3d4e5f6-a7b8-6c7d-0e1f-3c4d5e6f7a8b', NOW(), NOW(), 'Home', 'Home management and improvements', 'd8d1e45f-8d4b-5e95-9d8d-8d8d4c5f6e7b');
+  ('8ed01e29-168f-45de-b77c-651e856ae35d', NOW(), NOW(), 'Work', 'Work-related projects and tasks', '3b6513a7-87a3-4e83-a3f4-1c247fc8088f'),
+  ('54c692c9-384a-4d17-8620-1e6132a6f392', NOW(), NOW(), 'Personal', 'Personal projects and goals', '3b6513a7-87a3-4e83-a3f4-1c247fc8088f'),
+  ('2314f2ba-f08f-464c-8b8f-823322162414', NOW(), NOW(), 'Home', 'Home management and improvements', '44836706-c0a4-49d3-9d50-2f427f947fcc');
 
 -- Insert projects for each area
 INSERT INTO public.Project (id, created_at, updated_at, due_at, name, description, "order", user_id, status, area_id) VALUES
   -- Projects for User 1's Work Area
-  ('d4e5f6a7-b8c9-7d8e-1f2a-4d5e6f7a8b9c', NOW(), NOW(), NOW() + interval '30 days', 'Q4 Planning', 'Strategic planning for Q4', 1, 'c9c2d34e-7c3a-4f84-8c9c-9c7c3b4e5f6a', 'In Progress', 'a1b2c3d4-e5f6-4a5b-8c9d-1a2b3c4d5e6f'),
-  ('e5f6a7b8-c9d0-8e9f-2a3b-5e6f7a8b9c0d', NOW(), NOW(), NOW() + interval '60 days', 'Website Redesign', 'Company website overhaul', 2, 'c9c2d34e-7c3a-4f84-8c9c-9c7c3b4e5f6a', 'Planning', 'a1b2c3d4-e5f6-4a5b-8c9d-1a2b3c4d5e6f'),
+  ('bec1407f-2b50-427b-92bf-d9aed16f4569', NOW(), NOW(), NOW() + interval '30 days', 'Q4 Planning', 'Strategic planning for Q4', 1, '3b6513a7-87a3-4e83-a3f4-1c247fc8088f', 'in_progress', '8ed01e29-168f-45de-b77c-651e856ae35d'),
+  ('f5f59622-1f5f-472b-bd0b-62afbd8d38d6', NOW(), NOW(), NOW() + interval '60 days', 'Website Redesign', 'Company website overhaul', 2, '3b6513a7-87a3-4e83-a3f4-1c247fc8088f', 'not_started', '8ed01e29-168f-45de-b77c-651e856ae35d'),
   
   -- Projects for User 1's Personal Area
-  ('f6a7b8c9-d0e1-9f0a-3b4c-6f7a8b9c0d1e', NOW(), NOW(), NOW() + interval '90 days', 'Fitness Goal', 'Personal fitness improvement plan', 1, 'c9c2d34e-7c3a-4f84-8c9c-9c7c3b4e5f6a', 'Active', 'b2c3d4e5-f6a7-5b6c-9d0e-2b3c4d5e6f7a'),
+  ('4ecdbd52-4f36-4815-bbc9-ccf4c4a7cfd6', NOW(), NOW(), NOW() + interval '90 days', 'Fitness Goal', 'Personal fitness improvement plan', 1, '3b6513a7-87a3-4e83-a3f4-1c247fc8088f', 'in_progress', '54c692c9-384a-4d17-8620-1e6132a6f392'),
   
   -- Projects for User 2's Home Area
-  ('a7b8c9d0-e1f2-0a1b-4c5d-7a8b9c0d1e2f', NOW(), NOW(), NOW() + interval '45 days', 'Kitchen Remodel', 'Kitchen renovation project', 1, 'd8d1e45f-8d4b-5e95-9d8d-8d8d4c5f6e7b', 'Planning', 'c3d4e5f6-a7b8-6c7d-0e1f-3c4d5e6f7a8b');
+  ('c1f07f65-615a-4fcd-a7ae-45dc6cd07daa', NOW(), NOW(), NOW() + interval '45 days', 'Kitchen Remodel', 'Kitchen renovation project', 1, '44836706-c0a4-49d3-9d50-2f427f947fcc', 'not_started', '2314f2ba-f08f-464c-8b8f-823322162414');
+
+-- Insert milestones for projects
+INSERT INTO public.Milestone (id, created_at, updated_at, due_at, name, description, "order", status, project_id) VALUES
+  ('c5b8dfe1-a551-4d65-b2e6-524b2b9a72af', NOW(), NOW(), NOW() + interval '15 days', 'Initial Planning', 'Complete initial planning phase', 1, 'not_started', 'bec1407f-2b50-427b-92bf-d9aed16f4569'),
+  ('460b0441-6c5c-4659-83e2-120298c20f57', NOW(), NOW(), NOW() + interval '45 days', 'Design Phase', 'Complete website design', 1, 'not_started', 'f5f59622-1f5f-472b-bd0b-62afbd8d38d6');
 
 -- Insert tasks for each project
-INSERT INTO public.Task (id, created_at, updated_at, due_at, name, description, "order", completed, project_id, parent_id) VALUES
+INSERT INTO public.Task (id, created_at, updated_at, due_at, name, description, "order", status, project_id, milestone_id, parent_id) VALUES
   -- Tasks for Q4 Planning Project
-  ('b8c9d0e1-f2a3-1b2c-5d6e-8b9c0d1e2f3a', NOW(), NOW(), NOW() + interval '7 days', 'Review Q3 Metrics', 'Analyze Q3 performance data', 1, false, 'd4e5f6a7-b8c9-7d8e-1f2a-4d5e6f7a8b9c', null),
-  ('c9d0e1f2-a3b4-2c3d-6e7f-9c0d1e2f3a4b', NOW(), NOW(), NOW() + interval '14 days', 'Draft Strategy Document', 'Create Q4 strategy outline', 2, false, 'd4e5f6a7-b8c9-7d8e-1f2a-4d5e6f7a8b9c', null),
+  ('fa94e3fc-110b-444b-8064-6526cf46c996', NOW(), NOW(), NOW() + interval '7 days', 'Review Q3 Metrics', 'Analyze Q3 performance data', 1, 'not_started', 'bec1407f-2b50-427b-92bf-d9aed16f4569', 'c5b8dfe1-a551-4d65-b2e6-524b2b9a72af', null),
+  ('9379dab6-36ed-48b1-a0bc-47e5ad1729b3', NOW(), NOW(), NOW() + interval '14 days', 'Draft Strategy Document', 'Create Q4 strategy outline', 2, 'not_started', 'bec1407f-2b50-427b-92bf-d9aed16f4569', null, null),
   
   -- Tasks for Website Redesign Project
-  ('d0e1f2a3-b4c5-3d4e-7f8a-0d1e2f3a4b5c', NOW(), NOW(), NOW() + interval '30 days', 'Wireframe Design', 'Create website wireframes', 1, false, 'e5f6a7b8-c9d0-8e9f-2a3b-5e6f7a8b9c0d', null),
+  ('f4576df5-af4d-4e8a-bb44-5e8f4d0f7c06', NOW(), NOW(), NOW() + interval '30 days', 'Wireframe Design', 'Create website wireframes', 1, 'not_started', 'f5f59622-1f5f-472b-bd0b-62afbd8d38d6', '460b0441-6c5c-4659-83e2-120298c20f57', null),
   
   -- Subtasks for Wireframe Design
-  ('e1f2a3b4-c5d6-4e5f-8a9b-1e2f3a4b5c6d', NOW(), NOW(), NOW() + interval '25 days', 'Homepage Wireframe', 'Design homepage layout', 1, false, 'e5f6a7b8-c9d0-8e9f-2a3b-5e6f7a8b9c0d', 'd0e1f2a3-b4c5-3d4e-7f8a-0d1e2f3a4b5c'),
-  ('f2a3b4c5-d6e7-5f6a-9b0c-2f3a4b5c6d7e', NOW(), NOW(), NOW() + interval '28 days', 'Product Page Wireframe', 'Design product page layout', 2, false, 'e5f6a7b8-c9d0-8e9f-2a3b-5e6f7a8b9c0d', 'd0e1f2a3-b4c5-3d4e-7f8a-0d1e2f3a4b5c'),
+  ('1f16aee8-5128-4107-8a5a-3931bf8c37ab', NOW(), NOW(), NOW() + interval '25 days', 'Homepage Wireframe', 'Design homepage layout', 1, 'not_started', 'f5f59622-1f5f-472b-bd0b-62afbd8d38d6', null, 'f4576df5-af4d-4e8a-bb44-5e8f4d0f7c06'),
+  ('b4cd8bbb-4248-47d2-bd2a-396237512139', NOW(), NOW(), NOW() + interval '28 days', 'Product Page Wireframe', 'Design product page layout', 2, 'not_started', 'f5f59622-1f5f-472b-bd0b-62afbd8d38d6', null, 'f4576df5-af4d-4e8a-bb44-5e8f4d0f7c06'),
   
   -- Tasks for Fitness Goal Project
-  ('a3b4c5d6-e7f8-6a7b-0c1d-3a4b5c6d7e8f', NOW(), NOW(), NOW() + interval '7 days', 'Create Workout Schedule', 'Plan weekly workout routine', 1, false, 'f6a7b8c9-d0e1-9f0a-3b4c-6f7a8b9c0d1e', null),
+  ('3e111135-fd49-479a-938f-5e0fa536f3e6', NOW(), NOW(), NOW() + interval '7 days', 'Create Workout Schedule', 'Plan weekly workout routine', 1, 'not_started', '4ecdbd52-4f36-4815-bbc9-ccf4c4a7cfd6', null, null),
   
   -- Tasks for Kitchen Remodel Project
-  ('b4c5d6e7-f8a9-7b8c-1d2e-4b5c6d7e8f9a', NOW(), NOW(), NOW() + interval '15 days', 'Get Contractor Quotes', 'Contact and compare contractors', 1, false, 'a7b8c9d0-e1f2-0a1b-4c5d-7a8b9c0d1e2f', null);
+  ('f5215ba8-7534-47c2-86a2-e3aedcb5c049', NOW(), NOW(), NOW() + interval '15 days', 'Get Contractor Quotes', 'Contact and compare contractors', 1, 'not_started', 'c1f07f65-615a-4fcd-a7ae-45dc6cd07daa', null, null);
