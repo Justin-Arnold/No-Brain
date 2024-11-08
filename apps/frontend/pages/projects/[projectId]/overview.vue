@@ -16,6 +16,8 @@ const { data: project } = await useFetch(
 
 const areaName = ref('')
 
+const isMilestoneCreateDialogOpen = ref(false)
+
 onBeforeMount(async () => {
     if (!project.value) {
         return ''
@@ -45,11 +47,13 @@ onBeforeMount(async () => {
                         Milestones
                     </h2>
                     <span
-                        class="grid place-items-center w-fit aspect-square rounded-full bg-surface-600 p-1 cursor-pointer">
+                        class="grid place-items-center w-fit aspect-square rounded-full bg-surface-600 p-1 cursor-pointer"
+                        @click="isMilestoneCreateDialogOpen = true">
                         <Icon name="mdi-plus"></Icon>
                     </span>
                 </div>
             </div>
         </div>
     </div>
+    <MilestoneCreateDialog v-model="isMilestoneCreateDialogOpen" :project-id="project!.id" />
 </template>
