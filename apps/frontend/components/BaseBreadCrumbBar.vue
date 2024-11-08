@@ -27,7 +27,6 @@ const rootNode = ref<RootNode>()
 const additionalNodes = ref<Node[]>([])
 
 watchEffect(async () => {
-    console.log('tt', fullPath.value)
     if (fullPath.value[0].toLowerCase() === RootNodeType.PROJECT.toLowerCase()) {
         rootNode.value = {
             label: RootNodeType.PROJECT,
