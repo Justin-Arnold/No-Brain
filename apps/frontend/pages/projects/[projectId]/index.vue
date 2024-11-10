@@ -18,6 +18,9 @@ onMounted(() => {
             label: 'Overview',
             path: 'overview'
         }, {
+            label: 'Milestones',
+            path: 'milestones'
+        }, {
             label: 'Tasks',
             path: 'tasks'
         }
