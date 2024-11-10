@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import { useConfirm } from "primevue/useconfirm";
 import { ZodError } from "zod";
+import type { Database } from "~/types/database.types";
 import type { TaskUpdateBody } from "ff/frontend/server/api/tasks/[taskId].put";
 
 definePageMeta({
     middleware: "authentication",
 });
+
+type Status = Database['public']['Enums']['status']
+type Task = Database['public']['Tables']['task']['Row']
 
 const route = useRoute();
 const projectId = route.params.projectId as string;
@@ -19,11 +23,6 @@ const { data: project, refresh } = await useFetch(
     `/api/projects/${projectId}`,
     { query: { id: userID } },
 );
-
-function onAreaChange(name: string) {
-    isSetAreaDialogOpen.value = false;
-    areaName.value = name
-}
 
 const newTask = ref("");
 
@@ -41,15 +40,14 @@ const addTask = async () => {
     refresh();
 };
 
-const updateTask = async (
-    id: number,
-    name: string,
-    completed: boolean,
-    order: number,
-) => {
-    const body: TaskUpdateBody = { name, completed, order };
+const updateTask = async (task: Task) => {
+    const body: TaskUpdateBody = {
+        name: task.name,
+        status: task.status,
+        order: task.order
+    };
     try {
-        await useFetch(`/api/tasks/${id}`, {
+        await useFetch(`/api/tasks/${task.id}`, {
             method: "PUT",
             body,
         });
@@ -65,7 +63,6 @@ const updateTask = async (
 const sortedTasks = computed({
     get() {
         if (!project.value) return [];
-        console.log('pv', project.value)
         return project.value.task.sort((a, b) => a.order - b.order);
     },
     set(value) {
@@ -74,7 +71,7 @@ const sortedTasks = computed({
                 method: "PUT",
                 body: JSON.stringify({
                     name: task.name,
-                    completed: task.completed,
+                    completed: task.status,
                     order: index,
                 }),
             });
@@ -89,49 +86,6 @@ const move = () => {
     // console.log(moveEvent);
 };
 
-function expandSelf(elementId: string) {
-    // toggle whitespace nowrap on clicked element
-    const element = document.getElementById(elementId);
-    if (element) {
-        element.classList.toggle("whitespace-nowrap");
-    }
-    // on a child span of that element toggle truncate
-    const child = element?.children[1];
-    if (child) {
-        child.classList.toggle("truncate");
-    }
-}
-
-const newName = ref(project?.value?.name || "");
-const editMode = ref(false);
-
-
-function updateProjectName(name: string) {
-    useFetch(`/api/projects/${projectId}`, {
-        method: "PUT",
-        body: { name: name },
-    }).then(() => {
-        editMode.value = false;
-        refresh();
-    });
-}
-
-const confirm = useConfirm();
-
-function confirmDelete() {
-    // todo remove any
-    confirm.require({
-        message: `Are you sure you want to delete "${project.value?.name}"?`,
-        icon: "pi pi-exclamation-triangle",
-        accept: () => {
-            useFetch(`/api/projects/${projectId}`, {
-                method: "DELETE",
-            }).then(() => {
-                navigateTo("/projects");
-            });
-        },
-    });
-}
 
 function deleteTask(id: number) {
     useFetch(`/api/tasks/${id}`, {
@@ -141,22 +95,22 @@ function deleteTask(id: number) {
     });
 }
 
-const areaName = ref('')
-
-onBeforeMount(async () => {
-    if (!project.value) {
-        return ''
+function toggleTaskCompletedStatus(task: Task) {
+    if (task.status === 'completed') {
+        task.status = 'not_started'
+    } else {
+        task.status = 'completed'
     }
+}
 
-    const area = await useArea(project.value?.area_id)
+function isTaskCompleted(task: Task) {
+    return task.status === 'completed'
+}
 
-    console.log('a', area)
-
-    areaName.value = area.value.name
-})
-
-
-const isSetAreaDialogOpen = ref(false);
+function onTaskStatusUpdate(task: Task) {
+    toggleTaskCompletedStatus(task)
+    updateTask(task)
+}
 </script>
 
 <template>
@@ -169,24 +123,15 @@ const isSetAreaDialogOpen = ref(false);
                     @end="drag = false">
                     <template #item="{ element }">
                         <span :id="element.id"
-                            class="flex w-full flex-shrink-0 cursor-pointer select-none items-center justify-between gap-4 overflow-hidden whitespace-nowrap rounded bg-gray-500 p-2"
-                            :class="{ '!bg-gray-700': element.completed }" @click="expandSelf(element.id)">
-                            <BaseCheckbox :model-value="element.completed" :class="{ 'opacity-20': element.completed }"
-                                binary @update:model-value="
-                                    updateTask(
-                                        element.id,
-                                        element.name,
-                                        !element.completed,
-                                        !element.completed
-                                            ? sortedTasks.length + 1
-                                            : element.order,
-                                    )
-                                    " @click.stop />
+                            class="flex w-full flex-shrink-0 select-none items-center justify-between gap-4 overflow-hidden whitespace-nowrap rounded bg-gray-500 p-2"
+                            :class="{ '!bg-gray-700 opacity-40': isTaskCompleted(element) }">
+                            <BaseCheckbox :model-value="isTaskCompleted(element)" binary
+                                @update:model-value="onTaskStatusUpdate(element)" @click.stop />
                             <span class="flex-grow truncate">
-                                {{ element.name }}
+                                {{ element.name }} - {{ element.order }}
                             </span>
                             <Icon name="mdi:trash" size="24"
-                                class="flex-shrink-0 hover:text-red-400 transition-colors duration-300"
+                                class="flex-shrink-0 hover:text-red-400 transition-colors duration-300 cursor-pointer"
                                 @click="deleteTask(element.id)"></Icon>
                         </span>
                     </template>

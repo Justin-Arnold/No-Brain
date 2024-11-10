@@ -10,10 +10,7 @@ const paramsSchema = z.object({
 
 const bodySchema = z.object({
     name: z.string(),
-    completed: z.boolean({
-        required_error: "Completed is required",
-        invalid_type_error: "Completed must be a boolean",
-    }),
+    status: z.string(),
     order: z.number(),
 });
 
