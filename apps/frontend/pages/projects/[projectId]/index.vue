@@ -5,6 +5,8 @@ definePageMeta({
 
 const route = useRoute()
 
+const rootPath = route.fullPath
+
 onMounted(() => {
     const projectId = route.params.projectId
     navigateTo(`${projectId}/overview`)
@@ -13,16 +15,17 @@ onMounted(() => {
 const setNavItems = inject('setNavItems')
 
 onMounted(() => {
+    console.log('r', `${rootPath}/milestones`)
     setNavItems([
         {
             label: 'Overview',
-            path: 'overview'
+            path: `${rootPath}/overview`
         }, {
             label: 'Milestones',
-            path: 'milestones'
+            path: `${rootPath}/milestones`
         }, {
             label: 'Tasks',
-            path: 'tasks'
+            path: `${rootPath}/tasks`
         }
     ])
 })

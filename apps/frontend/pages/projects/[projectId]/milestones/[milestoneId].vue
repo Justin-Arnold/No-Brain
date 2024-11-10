@@ -7,9 +7,16 @@ const { data: milestone, refresh } = await useFetch(
     `/api/milestones/${milestoneId}`,
 );
 
+
+const rootPath = route.fullPath
+
 function confirmDelete() {
 
 }
+
+onMounted(() => {
+    console.log('z', rootPath)
+})
 </script>
 
 <template>
