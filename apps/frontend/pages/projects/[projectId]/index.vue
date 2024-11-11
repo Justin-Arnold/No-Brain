@@ -15,7 +15,6 @@ onMounted(() => {
 const setNavItems = inject('setNavItems')
 
 onMounted(() => {
-    console.log('r', `${rootPath}/milestones`)
     setNavItems([
         {
             label: 'Overview',

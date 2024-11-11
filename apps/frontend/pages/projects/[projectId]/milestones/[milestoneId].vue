@@ -1,63 +1,38 @@
-<script lang="ts" setup>
-const route = useRoute();
-const milestoneId = route.params.milestoneId as string;
+<script setup lang="ts">
+definePageMeta({
+  middleware: "authentication",
+});
 
-const { data: milestone } = await useFetch(`/api/milestones/${milestoneId}`);
+const route = useRoute()
 
-function confirmDelete() {}
+const rootPath = route.fullPath
 
-const menu = ref();
+onMounted(() => {
+  const milestoneId = route.params.milestoneId
+  navigateTo(`${milestoneId}/overview`)
+})
 
-const AddTaskMenuItems = ref([
+const setNavItems = inject('setNavItems')
+
+onMounted(() => {
+  setNavItems([
     {
-        label: "Task Options",
-        items: [
-            {
-                label: "Create Task",
-            },
-            {
-                label: "Add Existing Task",
-            },
-        ],
-    },
-]);
+      label: 'Overview',
+      path: `${rootPath}/overview`
+    }, {
+      label: 'Milestones',
+      path: `${rootPath}/milestones`
+    }, {
+      label: 'Tasks',
+      path: `${rootPath}/tasks`
+    }
+  ])
+})
 
-const toggleAddTaskMenu = (event: Event) => {
-    menu.value.toggle(event);
-};
 </script>
 
 <template>
-    <NuxtLayout name="overview">
-        <template #header>
-            <OverviewHeader
-                :title="milestone!.name"
-                :description="milestone?.description ?? undefined"
-            />
-        </template>
-        <template #header_action-bar>
-            <div class="card relative flex justify-center">
-                <div
-                    aria-haspopup="true"
-                    aria-controls="overlay_menu"
-                    @click="toggleAddTaskMenu"
-                >
-                    <IconTaskAdd class="hover:text-primary" />
-                </div>
-                <Menu
-                    id="overlay_menu"
-                    ref="menu"
-                    :model="AddTaskMenuItems"
-                    :popup="true"
-                />
-            </div>
-            <Icon
-                name="mdi:trash"
-                size="24"
-                class="flex-shrink-0 cursor-pointer transition-colors duration-300 hover:text-red-400"
-                @click="confirmDelete">
-            </Icon>
-            <BaseConfirmDialog />
-        </template>
-    </NuxtLayout>
+  <div class="flex h-full flex-col gap-8 overflow-hidden">
+    <RouterView></RouterView>
+  </div>
 </template>
