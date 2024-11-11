@@ -1,10 +1,11 @@
-import { serverSupabaseClient } from '#supabase/server'
 import { z } from "zod";
+import { serverSupabaseClient } from "#supabase/server";
 
 const bodySchema = z.object({
     name: z.string(),
     projectId: z.string(),
-    order: z.number(),
+    order: z.number().optional(),
+    milestoneId: z.string().optional()
 });
 
 export default defineEventHandler(async (event) => {
@@ -14,11 +15,18 @@ export default defineEventHandler(async (event) => {
 
 
     const client = await serverSupabaseClient(event)
-    const { data, error } = await client.from('task').insert([{
-        name: parsedBody.name,
-        order: parsedBody.order,
-        project_id: parsedBody.projectId
-    }]).select()
-
+    const { data, error } = await client
+        .from("task")
+        .insert([
+            {
+                name: parsedBody.name,
+                project_id: parsedBody.projectId,
+                order: parsedBody.order,
+                milestone_id: parsedBody.milestoneId,
+            }])
+        .select()
+    if (error) {
+        return createError(error)
+    }
     return data
 });

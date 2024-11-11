@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
     const parsedQuery = parseData(query, querySchema);
     const client = await serverSupabaseClient<Database>(event)
 
-    const { data } = await client.from('project').select(`*, user(*), task(*)`)
+    const { data } = await client.from('project').select(`*, user(*), task(*), milestone(*)`)
         .eq('id', parsedParams.projectId)
         .single();
 
