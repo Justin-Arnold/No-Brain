@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
     const parsedParams = parseData(event.context.params, paramsSchema);
     const client = await serverSupabaseClient<Database>(event)
 
-    const { data } = await client.from('milestone').select(`*`)
+    const { data } = await client.from('milestone').select(`*, task(*)`)
         .eq('id', parsedParams.milestoneId)
         .single();
 
