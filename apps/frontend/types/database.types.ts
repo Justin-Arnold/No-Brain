@@ -41,15 +41,15 @@ export type Database = {
           id: string
           name: string
           updated_at: string
-          user_id: string | null
+          user_id: string
         }
         Insert: {
           created_at?: string
           description?: string | null
           id?: string
           name?: string
-          updated_at: string
-          user_id?: string | null
+          updated_at?: string
+          user_id: string
         }
         Update: {
           created_at?: string
@@ -57,7 +57,7 @@ export type Database = {
           id?: string
           name?: string
           updated_at?: string
-          user_id?: string | null
+          user_id?: string
         }
         Relationships: [
           {
@@ -65,6 +65,50 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      milestone: {
+        Row: {
+          created_at: string
+          description: string | null
+          due_at: string | null
+          id: string
+          name: string
+          order: number | null
+          project_id: string
+          status: Database["public"]["Enums"]["status"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          due_at?: string | null
+          id?: string
+          name?: string
+          order?: number | null
+          project_id: string
+          status?: Database["public"]["Enums"]["status"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          due_at?: string | null
+          id?: string
+          name?: string
+          order?: number | null
+          project_id?: string
+          status?: Database["public"]["Enums"]["status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "milestone_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "project"
             referencedColumns: ["id"]
           },
         ]
@@ -78,9 +122,9 @@ export type Database = {
           id: string
           name: string
           order: number | null
-          status: string | null
+          status: Database["public"]["Enums"]["status"]
           updated_at: string
-          user_id: string | null
+          user_id: string
         }
         Insert: {
           area_id?: string | null
@@ -90,9 +134,9 @@ export type Database = {
           id?: string
           name?: string
           order?: number | null
-          status?: string | null
+          status?: Database["public"]["Enums"]["status"]
           updated_at?: string
-          user_id?: string | null
+          user_id: string
         }
         Update: {
           area_id?: string | null
@@ -102,9 +146,9 @@ export type Database = {
           id?: string
           name?: string
           order?: number | null
-          status?: string | null
+          status?: Database["public"]["Enums"]["status"]
           updated_at?: string
-          user_id?: string | null
+          user_id?: string
         }
         Relationships: [
           {
@@ -125,45 +169,52 @@ export type Database = {
       }
       task: {
         Row: {
-          completed: boolean
           created_at: string
           description: string | null
           due_at: string | null
           id: string
+          milestone_id: string | null
           name: string
           order: number
           parent_id: string | null
-          project_id: string | null
-          subtask_id: string | null
+          project_id: string
+          status: Database["public"]["Enums"]["status"]
           updated_at: string
         }
         Insert: {
-          completed?: boolean
           created_at?: string
           description?: string | null
           due_at?: string | null
           id?: string
+          milestone_id?: string | null
           name?: string
           order?: number
           parent_id?: string | null
-          project_id?: string | null
-          subtask_id?: string | null
+          project_id: string
+          status?: Database["public"]["Enums"]["status"]
           updated_at?: string
         }
         Update: {
-          completed?: boolean
           created_at?: string
           description?: string | null
           due_at?: string | null
           id?: string
+          milestone_id?: string | null
           name?: string
           order?: number
           parent_id?: string | null
-          project_id?: string | null
-          subtask_id?: string | null
+          project_id?: string
+          status?: Database["public"]["Enums"]["status"]
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "task_milestone_id_fkey"
+            columns: ["milestone_id"]
+            isOneToOne: false
+            referencedRelation: "milestone"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "task_parent_id_fkey"
             columns: ["parent_id"]
@@ -203,7 +254,12 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      status:
+        | "not_started"
+        | "in_progress"
+        | "on_hold"
+        | "completed"
+        | "cancelled"
     }
     CompositeTypes: {
       [_ in never]: never
