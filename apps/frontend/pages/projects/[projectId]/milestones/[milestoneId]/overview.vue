@@ -14,7 +14,41 @@ const { data: allTasks } = await useFetch(`/api/tasks/`);
 const tasksWithNoMilestone = computed(() => {
   return allTasks.value!.filter(task => !task.milestone_id && task.project_id === projectId);
 })
-function confirmDelete() { }
+
+///////////////
+// Delete
+//////////////
+const confirm = useConfirm()
+const toast = useToast();
+
+function confirmDelete() {
+  confirm.require({
+    header: 'Confirm Milestone Deletion',
+    message: `Are you sure you want to delete "${milestone.value?.name}"?`,
+    rejectLabel: 'cancel',
+    rejectProps: {
+      label: 'Cancel',
+      severity: 'secondary',
+      outlined: true
+    },
+    acceptProps: {
+      label: 'Delete Milestone',
+      severity: 'danger'
+    },
+    accept: () => {
+      useFetch(`/api/milestones/${milestoneId}`, {
+        method: "DELETE",
+      }).then(() => {
+        navigateTo("/projects");
+        toast.add({ severity: 'success', summary: 'Confirmed', detail: 'Record deleted', life: 3000 });
+      });
+    },
+  });
+}
+///////////////
+// Delete
+//////////////
+
 const menu = ref();
 
 const AddTaskMenuItems = ref([
@@ -73,6 +107,7 @@ async function addTask(task: Task) {
 
 const taskCreateDialogOpen = ref(false);
 const taskAddDialogOpen = ref(false);
+
 </script>
 
 <template>
