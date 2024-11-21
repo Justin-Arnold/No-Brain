@@ -8,8 +8,8 @@ const route = useRoute()
 const rootPath = route.fullPath
 
 onMounted(() => {
-    const projectId = route.params.projectId
-    navigateTo(`${projectId}/overview`)
+    const milsetoneId = route.params.milestoneId
+    navigateTo(`${milsetoneId}/overview`)
 })
 
 const setNavItems = inject('setNavItems')
@@ -19,9 +19,6 @@ onMounted(() => {
         {
             label: 'Overview',
             path: `${rootPath}/overview`
-        }, {
-            label: 'Milestones',
-            path: `${rootPath}/milestones`
         }, {
             label: 'Tasks',
             path: `${rootPath}/tasks`

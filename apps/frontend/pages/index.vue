@@ -3,8 +3,15 @@ definePageMeta({
     middleware: "authentication",
     layout: "app-layout",
 });
+
+/////////////////
+// Navigation Bar
+/////////////////
+const navigationStore = usePageNavigationStore()
+
+navigationStore.setNavItems([])
 </script>
 
 <template>
-    <h1 class="text-white">Welcome!</h1>
+    <PageHome />
 </template>

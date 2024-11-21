@@ -8,12 +8,14 @@ const props = withDefaults(
         label: string;
         type?: "text" | "select";
         options?: T[];
+        optionLabel?: string;
         confirmLabel?: string;
         cancelLabel?: string;
     }>(),
     {
         type: "text",
         options: undefined,
+        optionLabel: undefined,
         confirmLabel: "confirm",
         cancelLabel: "cancel",
     },
@@ -42,19 +44,11 @@ const inputComponent = computed(() => {
 
 <template>
     <BaseDialog v-model="isOpen" :title="title">
-        <component
-            :is="inputComponent"
-            v-model="inputValue"
-            :label="label"
-            :options="options"
-            class="w-80"
-        />
+        <component :is="inputComponent" v-model="inputValue" :label="label" :options="options"
+            :option-label="optionLabel" class="w-80" />
         <div class="mt-4 flex items-center justify-end gap-2">
             <BaseButton :label="cancelLabel" outlined @click="emit('cancel')" />
-            <BaseButton
-                :label="confirmLabel"
-                @click="emit('confirm', inputValue)"
-            />
+            <BaseButton :label="confirmLabel" @click="emit('confirm', inputValue)" />
         </div>
     </BaseDialog>
 </template>

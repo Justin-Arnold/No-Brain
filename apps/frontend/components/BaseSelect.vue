@@ -14,12 +14,7 @@ const selectedValue = defineModel<T>();
 
 <template>
     <BaseLabel :for="name" :label="label">
-        <Select
-            v-model="selectedValue"
-            :name="name"
-            :options="options"
-            :option-label="optionLabel"
-            :placeholder="placeholder"
-        />
+        <Select v-model="selectedValue" :name="name" :options="options" :option-label="optionLabel"
+            :placeholder="placeholder" class="w-full" />
     </BaseLabel>
 </template>

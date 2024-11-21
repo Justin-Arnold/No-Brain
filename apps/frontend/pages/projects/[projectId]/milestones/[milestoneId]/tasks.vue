@@ -2,7 +2,6 @@
 import { useConfirm } from "primevue/useconfirm";
 import { ZodError } from "zod";
 import type { Database } from "~/types/database.types";
-import type { TaskUpdateBody } from "ff/frontend/server/api/tasks/[taskId].put";
 
 definePageMeta({
   middleware: "authentication",
@@ -16,12 +15,12 @@ const milestoneId = route.params.milestoneId as string;
 
 
 const { data: milestone, refresh } = await useFetch(
-    `/api/milestones/${milestoneId}`,
+  `/api/milestones/${milestoneId}`,
 );
 
 
 const updateTask = async (task: Task) => {
-  const body: TaskUpdateBody = {
+  const body = {
     name: task.name,
     status: task.status,
     order: task.order
@@ -92,22 +91,20 @@ function onTaskStatusUpdate(task: Task) {
   <div class="h-full overflow-hidden">
     <div class="flex h-full w-full flex-col items-center overflow-hidden">
       <div class="flex h-full min-w-[600px] flex-shrink-0 flex-col gap-4 overflow-hidden">
-        <draggable v-model="sortedTasks" item-key="id" tag="span"
-                   class="flex flex-grow flex-col gap-2 overflow-y-auto" :move="move" @start="drag = true"
-                   @end="drag = false">
+        <draggable v-model="sortedTasks" item-key="id" tag="span" class="flex flex-grow flex-col gap-2 overflow-y-auto">
           <template #item="{ element }">
-                        <span :id="element.id"
-                              class="flex w-full flex-shrink-0 select-none items-center justify-between gap-4 overflow-hidden whitespace-nowrap rounded bg-gray-500 p-2"
-                              :class="{ '!bg-gray-700 opacity-40': isTaskCompleted(element) }">
-                            <BaseCheckbox :model-value="isTaskCompleted(element)" binary
-                                          @update:model-value="onTaskStatusUpdate(element)" @click.stop />
-                            <span class="flex-grow truncate">
-                                {{ element.name }} - {{ element.order }}
-                            </span>
-                            <Icon name="mdi:trash" size="24"
-                                  class="flex-shrink-0 hover:text-red-400 transition-colors duration-300 cursor-pointer"
-                                  @click="deleteTask(element.id)"></Icon>
-                        </span>
+            <span :id="element.id"
+              class="flex w-full flex-shrink-0 select-none items-center justify-between gap-4 overflow-hidden whitespace-nowrap rounded bg-gray-500 p-2"
+              :class="{ '!bg-gray-700 opacity-40': isTaskCompleted(element) }">
+              <BaseCheckbox :model-value="isTaskCompleted(element)" binary
+                @update:model-value="onTaskStatusUpdate(element)" @click.stop />
+              <span class="flex-grow truncate">
+                {{ element.name }} - {{ element.order }}
+              </span>
+              <Icon name="mdi:trash" size="24"
+                class="flex-shrink-0 hover:text-red-400 transition-colors duration-300 cursor-pointer"
+                @click="deleteTask(element.id)"></Icon>
+            </span>
           </template>
         </draggable>
       </div>
