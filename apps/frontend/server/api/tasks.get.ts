@@ -1,9 +1,9 @@
 import { serverSupabaseClient } from '#supabase/server'
-
+import type { Database } from '~/types/database.types';
 
 export default defineEventHandler(async (event) => {
     routeAuth(event);
-    const client = await serverSupabaseClient(event)
+    const client = await serverSupabaseClient<Database>(event)
     const { data } = await client.from('task').select('*, project(*)')
     return data;
 });

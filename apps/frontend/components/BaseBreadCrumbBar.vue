@@ -1,16 +1,18 @@
 <script lang="ts" setup>
 enum RootNodeType {
-    PROJECT = 'Projects'
+    PROJECT = 'Projects',
+    HOME = 'Home'
+}
+
+export type NavItem = {
+    label: string
+    path: string
+    icon?: string
 }
 
 interface Node<T extends string = string> {
-    label: T
+    label?: T
     route: string
-}
-
-type NavItem = {
-    label: string
-    path: string
     icon?: string
 }
 
@@ -19,14 +21,27 @@ defineProps<{
 }>()
 
 type RootNode = Node<RootNodeType>
+type HomeNode = Node<RootNodeType>
 
 const route = useRoute();
 const fullPath = computed(() => route.fullPath.split('/').filter((item) => item !== ''));
 
 const rootNode = ref<RootNode>()
+const homeNode = ref<HomeNode>()
+
 const additionalNodes = ref<Node[]>([])
 
 watchEffect(async () => {
+    homeNode.value = {
+        route: '/',
+        icon: 'line-md:home-twotone'
+    }
+
+    if (fullPath.value.length === 0) {
+        rootNode.value = undefined
+        return
+    }
+
     if (fullPath.value[0].toLowerCase() === RootNodeType.PROJECT.toLowerCase()) {
         rootNode.value = {
             label: RootNodeType.PROJECT,
@@ -54,13 +69,16 @@ watchEffect(async () => {
 })
 
 const allNodes = computed((): any[] => {
+    if (!rootNode.value) {
+        return []
+    }
     return [rootNode.value, ...additionalNodes.value]
 });
 </script>
 
 <template>
     <div class="flex justify-between items-center bg-surface-800 rounded pr-4">
-        <Breadcrumb :model="allNodes" :pt="{
+        <Breadcrumb :home="homeNode" :model="allNodes" :pt="{
             root: {
                 class: '!bg-transparent'
             }
@@ -68,6 +86,7 @@ const allNodes = computed((): any[] => {
             <template #item="{ item }">
                 <NuxtLink :to="item.route" class="text-gray-400">
                     {{ item.label }}
+                    <Icon v-if="item.icon" :name="item.icon" size="20px" />
                 </NuxtLink>
             </template>
         </Breadcrumb>

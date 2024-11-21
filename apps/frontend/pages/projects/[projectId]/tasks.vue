@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useConfirm } from "primevue/useconfirm";
 import { ZodError } from "zod";
 import type { Database } from "~/types/database.types";
 import type { TaskUpdateBody } from "ff/frontend/server/api/tasks/[taskId].put";

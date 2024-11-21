@@ -22,12 +22,17 @@ const PlanoteTheme = definePreset(Aura, {
 
 export default defineNuxtConfig({
   modules: [
-      "@nuxtjs/supabase",
-      "nuxt-icon",
-      "@vee-validate/nuxt",
-      "@nuxtjs/tailwindcss",
-      '@primevue/nuxt-module'
+    "@nuxtjs/supabase",
+    "nuxt-icon",
+    "@vee-validate/nuxt",
+    "@nuxtjs/tailwindcss",
+    '@primevue/nuxt-module',
+    '@pinia/nuxt'
   ],
+
+  build: {
+    transpile: ['pinia-plugin-persistedstate'],
+  },
 
   primevue: {
       options: {

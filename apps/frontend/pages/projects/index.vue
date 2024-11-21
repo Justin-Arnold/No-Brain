@@ -1,15 +1,6 @@
-<script setup lang="ts">
+<!-- <script setup lang="ts">
 
-const user = useSupabaseUser();
 
-const userID = computed(() => user.value?.id);
-
-const {
-    data: projects,
-    refresh,
-} = await useFetch(`/api/projects`, {
-    query: { id: userID },
-});
 
 const createProjectModalIsOpen = ref(false)
 
@@ -28,23 +19,43 @@ async function createProject() {
 
 
 <template>
-    <NuxtLayout name="card-list-layout">
-        <BaseCard v-for="project, index in projects" :key="index" class="aspect-square"
-            :pt="{ body: { class: 'flex flex-col h-full' }, content: { class: 'grow' } }">
-            <template #title>
-                {{ project.name }}
-            </template>
-            <p>description text</p>
-            <template #footer>
-                <div class="flex gap-2 justify-end">
-                    <BaseButton label="Edit" text></BaseButton>
-                    <BaseButton label="Enter" @click="navigateTo('projects/' + project.id)"></BaseButton>
-                </div>
-            </template>
-        </BaseCard>
-        <template #bottomButton>
-            <BaseButton label="Create Project" text-only @click="createProjectModalIsOpen = true" />
-        </template>
-        <ProjectCreateDialog v-model="createProjectModalIsOpen" />
-    </NuxtLayout>
+    
+</template> -->
+
+<script setup lang="ts">
+import type { NavItem } from '~/components/BaseBreadCrumbBar.vue';
+
+
+////////////
+// Page Data
+////////////
+definePageMeta({
+    middleware: "authentication",
+    layout: "app-layout",
+});
+
+/////////////////
+// Navigation Bar
+/////////////////
+const navigationStore = usePageNavigationStore()
+
+navigationStore.setNavItems([])
+
+/////////////////
+// Project Data
+/////////////////
+const user = useSupabaseUser();
+
+const userID = computed(() => user.value?.id);
+
+const {
+    data: projects,
+} = await useFetch(`/api/projects`, {
+    query: { id: userID },
+});
+
+</script>
+
+<template>
+    <PageProjects :page-navigation-items="navigationStore.navItems" :projects="projects || undefined" />
 </template>
