@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import type { string } from 'zod';
+
 enum RootNodeType {
     PROJECT = 'Projects',
     HOME = 'Home'
@@ -10,6 +12,12 @@ export type NavItem = {
     icon?: string
 }
 
+export type ActionItem = {
+    label: string
+    action: () => void
+    icon?: string
+}
+
 interface Node<T extends string = string> {
     label?: T
     route: string
@@ -18,6 +26,7 @@ interface Node<T extends string = string> {
 
 defineProps<{
     navItems?: NavItem[]
+    actionItems?: ActionItem[]
 }>()
 
 type RootNode = Node<RootNodeType>
@@ -95,6 +104,8 @@ const allNodes = computed((): any[] => {
                 active-class="!text-primary-400">
                 {{ item.label }}
             </NuxtLink>
+            <BaseButton v-for="action in actionItems" :key="action.label" @click="action.action" :label="action.label"
+                text-only />
         </div>
     </div>
 </template>
