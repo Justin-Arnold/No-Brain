@@ -10,6 +10,7 @@ definePageMeta({
 const navigationStore = usePageNavigationStore()
 
 navigationStore.setNavItems([])
+navigationStore.setActionItems([])
 </script>
 
 <template>

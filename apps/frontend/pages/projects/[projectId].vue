@@ -24,6 +24,8 @@ onMounted(() => {
         }
     ])
     navigateTo(`${projectId}/overview`)
+
+    pageNavigationStore.setActionItems([])
 })
 </script>
 
