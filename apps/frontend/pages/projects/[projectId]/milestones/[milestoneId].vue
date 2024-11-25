@@ -1,21 +1,17 @@
 <script setup lang="ts">
 definePageMeta({
     middleware: "authentication",
+    layout: "app-layout",
 });
 
 const route = useRoute()
-
 const rootPath = route.fullPath
 
-onMounted(() => {
-    const milsetoneId = route.params.milestoneId
-    navigateTo(`${milsetoneId}/overview`)
-})
-
-const setNavItems = inject('setNavItems')
+const pageNavigationStore = usePageNavigationStore()
 
 onMounted(() => {
-    setNavItems([
+    const projectId = route.params.projectId
+    pageNavigationStore.setNavItems([
         {
             label: 'Overview',
             path: `${rootPath}/overview`
@@ -24,12 +20,10 @@ onMounted(() => {
             path: `${rootPath}/tasks`
         }
     ])
+    navigateTo(`${projectId}/overview`)
 })
-
 </script>
 
 <template>
-    <div class="flex h-full flex-col gap-8 overflow-hidden">
-        <RouterView></RouterView>
-    </div>
+    <RouterView />
 </template>
