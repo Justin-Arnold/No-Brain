@@ -10,7 +10,7 @@ const rootPath = route.fullPath
 const pageNavigationStore = usePageNavigationStore()
 
 onMounted(() => {
-    const projectId = route.params.projectId
+    const milestoneId = route.params.milestoneId
     pageNavigationStore.setNavItems([
         {
             label: 'Overview',
@@ -20,7 +20,7 @@ onMounted(() => {
             path: `${rootPath}/tasks`
         }
     ])
-    navigateTo(`${projectId}/overview`)
+    navigateTo(`${milestoneId}/overview`)
 })
 </script>
 
